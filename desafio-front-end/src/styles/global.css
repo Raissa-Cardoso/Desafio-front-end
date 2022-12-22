@@ -1,0 +1,44 @@
+:root {
+    --color-background-header:#FFF;
+    --color-background-main: #FBFBFB;
+    --color-primary-blue:#18ACC4;
+    --color-secondary-blue:#007A8D;
+    --color-primary-yellow:#FDCB13;
+    --color-secondary-yellow: #DE9E1F;
+    --color-green:#0FA866;
+    --color-font-white:#fff; 
+    --color-font-black:#1F2D30;    
+    --color-modal-overlay: rgba(31, 45, 48,0.88);
+    --font-size-small: 24px;
+    --font-size-medium: 32px;
+}
+*{
+    padding:0;
+    margin:0;
+    box-sizing: border-box;
+    font-family: sans-serif;    
+}
+html, body{
+    background-color: var(--color-background-home);
+}
+main{
+    background-color: var(--color-background-home);
+}
+a{
+    text-decoration: none;
+    transition: 0.2s opacity;    
+}
+a:hover, .router-link-active{
+    opacity:0.4;
+}
+h1{
+    margin: 20px;
+}
+main{
+    display: flex;
+    flex-direction: column;
+}
+.card{
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+    margin-bottom: 20px;
+}
