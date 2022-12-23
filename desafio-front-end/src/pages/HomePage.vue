@@ -76,7 +76,7 @@ main{
     display: none;
     z-index: 100;
     width: 70vw;
-    height: 70vh;
+    height: 80vh;
     border: solid 1px black;
     position: fixed;
     align-self: center;    
@@ -182,7 +182,7 @@ h2,
         height: 76vh;
     }
     .mask{
-        height: calc(100vh + 102px);
+        height: calc(100vh + 110px);
     }
     .return {
         display: none;

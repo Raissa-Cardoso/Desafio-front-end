@@ -6,14 +6,16 @@
         <div class='cityCourse'>
             <div class="city">
                 <label htmlFor="city">SELECIONE SUA CIDADE</label>
-                <select id="city">
-                    <option key="" value=""></option>
+                <select id="city" v-on:change="changeCity">
+                    <option value=""></option>
+                    <option v-for="(city, index) in dbCityOrder" :key="index"> {{ city }}</option>
                 </select>
             </div>
             <div class="course">
                 <label htmlFor="course">SELECIONE O CURSO DE SUA PREFERÊNCIA</label>
                 <select id="course">
-                    <option key="" value=""></option>
+                    <option value=""></option>
+                    <option v-for="(course, index) in dbCourseOrder" :key="index"> {{ course }}</option>
                 </select>
             </div>
         </div>
@@ -31,9 +33,9 @@
             </div>
             <div class='priceModal'>
                 <p>ATÉ QUANTO PODE PAGAR?</p>
-                <p>R$</p>
-                <div class="progress">
-                    <button></button>
+                <p>R$ {{ this.priceChanged }}</p>
+                <div class="priceBar">
+                    <input type="range" name="" id="changePrice" min=0 max=10000 v-on:change="changePrice">
                 </div>
             </div>
         </div>
@@ -45,42 +47,86 @@
                 <p>Ordenar por </p>
                 <select name="universityOp" id="universityOp">
                     <option value="Nome da faculdade">Nome da faculdade</option>
-                    <option key="" value=""></option>
+                    <option v-for="(university, index) in dbUniversityOrder" :key="index"> {{ university }}</option>
                 </select>
             </div>
         </div>
         <div class="dividerModal"></div>
         <div class="universitiesModal">
-            <div class='universityModal' key="">
-                <input type="checkbox" name="" id="" />
-                <img src="" alt="" />
-                <div class='courseModal'>
-                    <p>Administração</p>
-                    <p>Bacharelado</p>
-                </div>
-                <div class='scholarshipModal'>
-                    <div class='scholarshipModalPorcentage'>
-                        <p>Bolsa de </p>
-                        <p> %</p>
+            <div v-if="city == ''">
+                <div v-for="(offer, index) in db" :key="index">
+                    <div class='universityModal'>
+                        <input type="checkbox" name="" id="" />
+                        <img src='https://www.tryimg.com/u/2019/04/16/unip.png' alt={{offer.university.logo_url}} />
+                        <div class='courseModal'>
+                            <p>{{ offer.course.name }}</p>
+                            <p>{{ offer.course.level }}</p>
+                        </div>
+                        <div class='scholarshipModal'>
+                            <div class='scholarshipModalPorcentage'>
+                                <p>Bolsa de </p>
+                                <p>{{ offer.discount_percentage }}%</p>
+                            </div>
+                            <p>R$ {{ offer.price_with_discount }} / mês</p>
+                        </div>
                     </div>
-                    <p>R$ / mês</p>
+                    <div class="dividerModal"></div>
                 </div>
+
             </div>
+
         </div>
-        <div class="dividerModal"></div>
+
     </main>
 </template>
  
 <script>
+import db from '../data/db.json'
 export default {
     name: 'ModalComponent',
+    data() {
+        return {
+            db: db,
+            dbCity: [],
+            dbCityOrder: [],
+            dbCourse: [],
+            dbCourseOrder: [],
+            dbUniversity: [],
+            dbUniversityOrder: [],
+            priceChanged: 0,
+            city: ""
+        }
+    },
+    mounted() {
+        for (let i = 0; i < db.length; i++) {
+            if (this.dbCity.indexOf(this.db[i].campus.city) == -1) {
+                this.dbCity.push(db[i].campus.city)
+            }
+            if (this.dbCourse.indexOf(this.db[i].course.name) == -1) {
+                this.dbCourse.push(db[i].course.name)
+            }
+            if (this.dbUniversity.indexOf(this.db[i].university.name) == -1) {
+                this.dbUniversity.push(db[i].university.name)
+            }
+        }
+        this.dbCityOrder = this.dbCity.sort()
+        this.dbCourseOrder = this.dbCourse.sort()
+        this.dbUniversityOrder = this.dbUniversity.sort()
+
+    },
     methods: {
         closeModal: function () {
             this.modal = document.querySelector('.modal')
             this.modal.style.display = "none"
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "none"
-        }
+        },
+        changePrice: function () {
+            this.priceChanged = document.querySelector('#changePrice').value
+        },
+        changeCity: function () {
+            this.city = document.querySelector('#city').value
+        },
     }
 }
 </script>
@@ -103,8 +149,17 @@ export default {
     font-weight: bold;
 }
 
-#subtitle, .scholarshipModal {
+#subtitle,
+.scholarshipModal {
     font-size: var(--font-size-smallest);
+    width: 20%;
+    margin-right: 40px;
+}
+
+.scholarshipModal :nth-child(2),
+.scholarshipModal :nth-child(3) {
+    font-weight: bold;
+    color: var(--color-green);
 }
 
 .kindPrice,
@@ -117,16 +172,21 @@ export default {
 
 .kindModal,
 .priceModal {
-    width: 38%;
-    height: 70px;
+    width: 35%;
+    height: 120px;
 }
 
-.dividerModal{
+.priceBar input {
+    width: 100%;
+}
+
+.dividerModal {
     height: 1px;
-    width: 97%;        
+    width: 97%;
     background-color: var(--color-primary-blue);
     opacity: 0.5;
 }
+
 .kindModal p,
 .cityCourse,
 .priceModal :nth-child(1),
@@ -137,29 +197,41 @@ export default {
 }
 
 .kindModalOptions,
-.order, .universityModal, .scholarshipModalPorcentage{
+.order,
+.universityModal,
+.scholarshipModalPorcentage {
     display: flex;
     flex-direction: row;
     align-items: center;
-   
 }
-.universityModal img{
+
+.scholarshipModalPorcentage :nth-child(1) {
+    margin-right: 5px;
+}
+
+.universitiesModal {
+    overflow-x: scroll;
+}
+
+.universityModal img {
     width: 30%;
+    height: 35px;
+    object-fit: contain;
 }
-.courseModal{
-    width: 50%;    
+
+.courseModal {
+    width: 50%;
 }
-.courseModal :nth-child(1){
+
+.courseModal :nth-child(1) {
     font-weight: bold;
     color: var(--color-secondary-blue);
 }
-.courseModal :nth-child(2){
-    font-size: var(--font-size-smallest) ;
+
+.courseModal :nth-child(2) {
+    font-size: var(--font-size-smallest);
 }
-.scholarshipModal{    
-    width: 20%; 
-    margin-right: 40px;   
-}
+
 .order p {
     align-self: center;
     margin-right: 10px;
@@ -197,7 +269,8 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.universitiesModal{
+
+.universitiesModal {
     display: flex;
     flex-direction: column;
 }
