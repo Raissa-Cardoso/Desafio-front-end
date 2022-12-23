@@ -5,8 +5,8 @@ import HomePage from '@/pages/HomePage'
 const routes=[
     {
         path:'/',       
-        component:HomePage
-    }    
+        component:HomePage        
+    }   
 ]
 const router = createRouter({
     history: createWebHistory(process.env.BASE_URL),

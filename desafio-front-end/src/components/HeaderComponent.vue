@@ -5,27 +5,30 @@
             <p>Ajuda</p>
             <p>Como funciona</p>
         </div>
+        <img class="divider" src='../assets/icons/divider.png' alt="divider icon" />
         <div class="infoTel">
             <img src='../assets/icons/whatsappGreen.png' alt="whatsapp logo" />
             <div>
                 <p>0800 123 2222</p>
                 <p>Envie mensagem ou ligue</p>
             </div>
-            
         </div>
-        <img src='../assets/icons/divider.png' alt="divider icon" />
-        <div class="quero-logo">
+        <img class="divider" src='../assets/icons/divider.png' alt="divider icon" />
+        <div class="queroLogo">
             <img src='../assets/quero-Logo.jpg' alt="quero logo" />
         </div>
         <img src='../assets/icons/divider.png' alt="divider icon" />
         <div class="login">
+            <p>Nome Sobrenome</p>
             <img src='../assets/icons/login.png' alt="login icon" />
             <p>Conta</p>
         </div>
     </header>
     <nav class="navHeader">
         <p>Minha conta</p>
-        <ul>            
+        <p>Pré-matrículas</p>
+        <p>Bolsas favoritas</p>
+        <ul>
             <li>Menu</li>
             <li> <img src='../assets/icons/dropMenu.png' alt="dropMenu icon" /></li>
         </ul>
@@ -54,7 +57,7 @@ header div {
     justify-content: center;
 }
 
-header img{
+header img {
     height: 90%;
 }
 
@@ -63,7 +66,13 @@ header p {
     font-weight: bold;
     font-size: var(--font-size-small);
 }
-.info :nth-child(3), .infoTel{
+
+.info :nth-child(3),
+.infoTel,
+header :nth-child(2),
+.login :nth-child(1),
+.navHeader :nth-child(2),
+.navHeader :nth-child(3) {
     display: none;
 }
 
@@ -77,41 +86,97 @@ header p {
     flex-direction: row;
     justify-content: space-between;
     padding: 0 30px;
-    align-items: center;   
+    align-items: center;
 }
-.navHeader ul{
+
+.navHeader ul {
     list-style: none;
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
 }
-.navHeader ul li{
+
+.navHeader ul li {
     padding-right: 10px;
 }
-@media (min-width:700px){
-        
-        header div{
-            flex-direction: row;
-        }
-         .info :nth-child(2){
-           display: none;
-         }
-         .info :nth-child(3), .infoTel{
-           display: block;
-         }
-         .infoTel{
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            justify-content: center;
-         }
-         .infoTel div{
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-         }
-         .infoTel img{
-            height: 70px;            
-         }
+
+@media (min-width:1178px) {
+    header {
+        height: 80px;
+    }
+
+    .info,
+    .infoTel,
+    .queroLogo,
+    .login {
+        flex-direction: row;
+        width: 25%;
+    }
+
+    header p {
+        font-size: var(--font-size-smaller);
+    }
+
+    .info :nth-child(2),
+    header :nth-child(4),
+    header :nth-child(6),
+    .login :nth-child(3),
+    .navHeader :nth-child(4) {
+        display: none;
+    }
+
+    .info :nth-child(3),
+    .infoTel,
+    header :nth-child(2),
+    .login :nth-child(1),
+    .navHeader :nth-child(2),
+    .navHeader :nth-child(3) {
+        display: block;
+    }
+
+    .navHeader :nth-child(2),
+    .navHeader :nth-child(3) {
+        font-weight: 200;
+    }
+
+    .infoTel {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .infoTel div {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .infoTel img {
+        margin-right: 20px;
+    }
+
+    .infoTel img,
+    .login img,
+    .info img,
+    .queroLogo img {
+        height: 40px;
+    }
+
+    .navHeader {
+        height: 40px;
+        font-size: var(--font-size-smallest);
+        display: flex;
+        justify-content: flex-start;
+        padding: 0 30px;
+    }
+
+    .navHeader p {
+        height: 100%;
+        padding: 10px 20px;
+    }
+
+    .navHeader :nth-child(3) {
+        background-color: var(--color-secondary-blue);
+    }
 }
 </style>
