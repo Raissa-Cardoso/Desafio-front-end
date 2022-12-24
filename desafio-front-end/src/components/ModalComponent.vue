@@ -13,7 +13,7 @@
             </div>
             <div class="course">
                 <label htmlFor="course">SELECIONE O CURSO DE SUA PREFERÊNCIA</label>
-                <select id="course">
+                <select id="course" v-on:change="changeCourse">
                     <option value=""></option>
                     <option v-for="(course, index) in dbCourseOrder" :key="index"> {{ course }}</option>
                 </select>
@@ -23,11 +23,13 @@
             <div class="kindModal">
                 <p>COMO VOCÊ QUER ESTUDAR?</p>
                 <div class="kindModalOptions">
-                    <input type="checkbox" class='kindCheck' name="kindCheck" value="presencial" id="kindPresencial" />
+                    <input type="checkbox" class='kindCheck' name="kindCheck" value="presencial" id="kindPresencial"
+                        v-on:click="changeKind('presencial')" />
                     <label htmlFor='kindPresencial' value="presencial">Presencial
                     </label>
-                    <input type="checkbox" class='kindCheck' name="kindCheck" value="adistancia" id="kindEad" />
-                    <label htmlFor='kindEad' value="adistancia">A distância
+                    <input type="checkbox" class='kindCheck' name="kindCheck" value="Ead" id="kindEad"
+                        v-on:click="changeKind('ead')" />
+                    <label htmlFor='kindEad' value="Ead">A distância
                     </label>
                 </div>
             </div>
@@ -53,30 +55,25 @@
         </div>
         <div class="dividerModal"></div>
         <div class="universitiesModal">
-            <div v-if="city == ''">
-                <div v-for="(offer, index) in db" :key="index">
-                    <div class='universityModal'>
-                        <input type="checkbox" name="" id="" />
-                        <img src='https://www.tryimg.com/u/2019/04/16/unip.png' alt={{offer.university.logo_url}} />
-                        <div class='courseModal'>
-                            <p>{{ offer.course.name }}</p>
-                            <p>{{ offer.course.level }}</p>
-                        </div>
-                        <div class='scholarshipModal'>
-                            <div class='scholarshipModalPorcentage'>
-                                <p>Bolsa de </p>
-                                <p>{{ offer.discount_percentage }}%</p>
-                            </div>
-                            <p>R$ {{ offer.price_with_discount }} / mês</p>
-                        </div>
+            <div v-for="(offer, index) in dbFilter" :key="index">
+                <div class='universityModal'>
+                    <input type="checkbox" name="" id="" />
+                    <img :src=offer.university.logo_url alt={{offer.university.logo_url}} />
+                    <div class='courseModal'>
+                        <p>{{ offer.course.name }}</p>
+                        <p>{{ offer.course.level }}</p>
                     </div>
-                    <div class="dividerModal"></div>
+                    <div class='scholarshipModal'>
+                        <div class='scholarshipModalPorcentage'>
+                            <p>Bolsa de </p>
+                            <p>{{ offer.discount_percentage }}%</p>
+                        </div>
+                        <p>R$ {{ offer.price_with_discount }} / mês</p>
+                    </div>
                 </div>
-
+                <div class="dividerModal"></div>
             </div>
-
         </div>
-
     </main>
 </template>
  
@@ -87,6 +84,8 @@ export default {
     data() {
         return {
             db: db,
+            dbFilter: [],
+            filters: ["","","","",""],
             dbCity: [],
             dbCityOrder: [],
             dbCourse: [],
@@ -94,7 +93,10 @@ export default {
             dbUniversity: [],
             dbUniversityOrder: [],
             priceChanged: 0,
-            city: ""
+            city: "",
+            course: "",
+            presencial: false,
+            ead: false
         }
     },
     mounted() {
@@ -112,6 +114,7 @@ export default {
         this.dbCityOrder = this.dbCity.sort()
         this.dbCourseOrder = this.dbCourse.sort()
         this.dbUniversityOrder = this.dbUniversity.sort()
+        this.dbFilter = this.db
 
     },
     methods: {
@@ -123,10 +126,59 @@ export default {
         },
         changePrice: function () {
             this.priceChanged = document.querySelector('#changePrice').value
+            this.filters[4] = this.priceChanged
+            this.changeFilters()
         },
         changeCity: function () {
             this.city = document.querySelector('#city').value
+            this.filters[0] = this.city
+            this.changeFilters()
+
         },
+        changeCourse: function () {
+            this.course = document.querySelector('#course').value
+            this.filters[1] = this.course
+            this.changeFilters()
+
+        },
+        changeKind: function (kindSelected) {
+            if (kindSelected == "presencial") {
+                this.presencial = !this.presencial
+                if (this.presencial == true) {
+                    this.filters[2] = this.presencial
+                    this.changeFilters()
+                }
+            }
+            if (kindSelected == "ead") {                
+                this.ead = !this.ead
+                if (this.ead == true) {
+                    this.filters[3] = this.ead
+                    this.changeFilters()
+                }
+            }
+        },
+        changeFilters: function () {            
+            if(this.dbFilter.length==0||(this.filters[0] == ""&&this.filters[1] == "")){
+                this.dbFilter=this.db
+            }
+            if (this.filters[0] !== "") {
+               this.dbFilter = this.dbFilter.filter(offer => offer.campus.city === this.city)               
+            }
+            if (this.filters[1] !== "") {
+                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)                
+            }
+            if(this.filters[2]!==""){
+                this.dbFilter = this.db.filter(offer => offer.course.kind === "Presencial")
+            }
+            if(this.filters[3]!==""){
+                this.dbFilter = this.db.filter(offer => offer.course.kind === "EaD")
+            }
+            if(this.filters[4]!==""){
+                this.dbFilter = this.db.filter(offer => offer.price_with_discount <= this.priceChanged)
+            }
+            
+        }
+
     }
 }
 </script>
@@ -142,6 +194,7 @@ export default {
 #title,
 #subtitle {
     color: var(--color-font-black);
+    width: 30%;
 }
 
 #title {
@@ -152,8 +205,11 @@ export default {
 #subtitle,
 .scholarshipModal {
     font-size: var(--font-size-smallest);
-    width: 20%;
     margin-right: 40px;
+}
+
+.scholarshipModal {
+    width: 20%;
 }
 
 .scholarshipModal :nth-child(2),
