@@ -47,10 +47,7 @@
             </div>
             <div class='order'>
                 <p>Ordenar por </p>
-                <select name="universityOp" id="universityOp">
-                    <option value="Nome da faculdade">Nome da faculdade</option>
-                    <option v-for="(university, index) in dbUniversityOrder" :key="index"> {{ university }}</option>
-                </select>
+                <button v-on:click="universitiesOrder">Nome da faculdade</button>                
             </div>
         </div>
         <div class="dividerModal"></div>
@@ -85,18 +82,22 @@ export default {
         return {
             db: db,
             dbFilter: [],
-            filters: ["","","","",""],
+            dbFilterOrder:[],
+            filters: ["", "", "", "", ""],
+            countFilters: 0,
+            filter: 0,
+            dbUniversity:[],
+            dbUniversityOrder:[],
             dbCity: [],
             dbCityOrder: [],
             dbCourse: [],
             dbCourseOrder: [],
-            dbUniversity: [],
-            dbUniversityOrder: [],
             priceChanged: 0,
             city: "",
             course: "",
             presencial: false,
-            ead: false
+            ead: false,
+            order:false,
         }
     },
     mounted() {
@@ -112,9 +113,10 @@ export default {
             }
         }
         this.dbCityOrder = this.dbCity.sort()
-        this.dbCourseOrder = this.dbCourse.sort()
+        this.dbCourseOrder = this.dbCourse.sort()        
         this.dbUniversityOrder = this.dbUniversity.sort()
         this.dbFilter = this.db
+
 
     },
     methods: {
@@ -145,40 +147,74 @@ export default {
             if (kindSelected == "presencial") {
                 this.presencial = !this.presencial
                 if (this.presencial == true) {
-                    this.filters[2] = this.presencial
+                    this.filters[2] = "Presencial"
+                    this.changeFilters()
+                } else {
+                    this.filters[2] = ""
                     this.changeFilters()
                 }
             }
-            if (kindSelected == "ead") {                
+            if (kindSelected == "ead") {
                 this.ead = !this.ead
                 if (this.ead == true) {
-                    this.filters[3] = this.ead
+                    this.filters[3] = "EaD"
+                    this.changeFilters()
+                } else {
+                    this.filters[3] = ""
                     this.changeFilters()
                 }
             }
         },
-        changeFilters: function () {            
-            if(this.dbFilter.length==0||(this.filters[0] == ""&&this.filters[1] == "")){
-                this.dbFilter=this.db
+        changeFilters: function () {
+            this.dbFilter = this.db
+            if (this.dbFilter.filter(offer => offer.campus.city === this.city).length !== 0) {
+                this.countFilters++
+                this.dbFilter = this.dbFilter.filter(offer => offer.campus.city === this.city)
             }
-            if (this.filters[0] !== "") {
-               this.dbFilter = this.dbFilter.filter(offer => offer.campus.city === this.city)               
+            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {
+                this.countFilters++
+                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)
             }
-            if (this.filters[1] !== "") {
-                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)                
+            if (this.presencial !== this.ead) {
+                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[2]).length !== 0) {
+                    this.countFilters++
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")
+                }
+                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[3]).length !== 0) {
+                    this.countFilters++
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "EaD")
+                }
+            } else if (this.presencial == this.ead == true) {
+                this.countFilters += 2
             }
-            if(this.filters[2]!==""){
-                this.dbFilter = this.db.filter(offer => offer.course.kind === "Presencial")
+            if (this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged).length !== 0) {
+                this.countFilters++
+                this.dbFilter = this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged)
             }
-            if(this.filters[3]!==""){
-                this.dbFilter = this.db.filter(offer => offer.course.kind === "EaD")
+            for (let i = 0; i < this.filters.length; i++) {
+                if (this.filters[i] !== "") { this.filter++ }
             }
-            if(this.filters[4]!==""){
-                this.dbFilter = this.db.filter(offer => offer.price_with_discount <= this.priceChanged)
+            if (this.filter > this.countFilters) {
+                this.dbFilter = []
             }
+            this.countFilters = 0
+            this.filter = 0
+        },
+        universitiesOrder: function(){            
+            this.order = !this.order
+            if(this.order==true){
+                for(let i=0; i<this.dbUniversityOrder.length;i++){                
+                this.dbFilter.map(offer => {
+                    if(offer.university.name.indexOf(this.dbUniversityOrder[i])!==-1){
+                        this.dbFilterOrder.push(offer)
+                    }
+                })
+            }
+            this.dbFilter=this.dbFilterOrder
+            } 
+            
             
         }
-
     }
 }
 </script>
@@ -288,15 +324,15 @@ export default {
     font-size: var(--font-size-smallest);
 }
 
-.order p {
-    align-self: center;
-    margin-right: 10px;
-}
-
-.order select {
+.order button {
     color: var(--color-secondary-blue);
     font-weight: bold;
     height: 25px;
+    align-self: center;
+    margin-left: 10px;
+    background-color: var(--color-background-main);
+    border: none;
+    cursor:pointer;
 }
 
 .kindModalOptions input {
