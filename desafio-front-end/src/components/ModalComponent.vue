@@ -47,14 +47,14 @@
             </div>
             <div class='order'>
                 <p>Ordenar por </p>
-                <button v-on:click="universitiesOrder">Nome da faculdade</button>                
+                <button v-on:click="universitiesOrder">Nome da faculdade</button>
             </div>
         </div>
         <div class="dividerModal"></div>
         <div class="universitiesModal">
             <div v-for="(offer, index) in dbFilter" :key="index">
                 <div class='universityModal'>
-                    <input type="checkbox" name="" id="" />
+                    <input type="checkbox" class="checkOffer" v-on:click="selectOffer(offer, index)" />
                     <img :src=offer.university.logo_url alt={{offer.university.logo_url}} />
                     <div class='courseModal'>
                         <p>{{ offer.course.name }}</p>
@@ -72,6 +72,11 @@
             </div>
         </div>
     </main>
+    <footer class="footerModal">
+        <button id="buttonCancel">Cancelar</button>
+        <button id="buttonAdd" v-on:click="addOffer"  @click="$emit('add',this.offerSelected)"
+            :class="{ buttonActived: isActive, buttonDesactived: !isActive }">Adicionar bolsa(s)</button>
+    </footer>
 </template>
  
 <script>
@@ -82,22 +87,25 @@ export default {
         return {
             db: db,
             dbFilter: [],
-            dbFilterOrder:[],
+            dbFilterOrder: [],
             filters: ["", "", "", "", ""],
             countFilters: 0,
             filter: 0,
-            dbUniversity:[],
-            dbUniversityOrder:[],
+            dbUniversity: [],
+            dbUniversityOrder: [],
             dbCity: [],
             dbCityOrder: [],
             dbCourse: [],
             dbCourseOrder: [],
+            offerSelected: [],
             priceChanged: 0,
             city: "",
             course: "",
             presencial: false,
             ead: false,
-            order:false,
+            order: false,
+            isActive: false,
+            indexSelected: []
         }
     },
     mounted() {
@@ -113,7 +121,7 @@ export default {
             }
         }
         this.dbCityOrder = this.dbCity.sort()
-        this.dbCourseOrder = this.dbCourse.sort()        
+        this.dbCourseOrder = this.dbCourse.sort()
         this.dbUniversityOrder = this.dbUniversity.sort()
         this.dbFilter = this.db
 
@@ -125,6 +133,9 @@ export default {
             this.modal.style.display = "none"
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "none"
+            if(this.offerSelected.length!==0){
+                document.querySelector('.offerSelected').style.display = "flex"
+            }
         },
         changePrice: function () {
             this.priceChanged = document.querySelector('#changePrice').value
@@ -200,20 +211,50 @@ export default {
             this.countFilters = 0
             this.filter = 0
         },
-        universitiesOrder: function(){            
+        universitiesOrder: function () {
             this.order = !this.order
-            if(this.order==true){
-                for(let i=0; i<this.dbUniversityOrder.length;i++){                
-                this.dbFilter.map(offer => {
-                    if(offer.university.name.indexOf(this.dbUniversityOrder[i])!==-1){
-                        this.dbFilterOrder.push(offer)
-                    }
-                })
+            if (this.order == true) {
+                for (let i = 0; i < this.dbUniversityOrder.length; i++) {
+                    this.dbFilter.map(offer => {
+                        if (offer.university.name.indexOf(this.dbUniversityOrder[i]) !== -1) {
+                            this.dbFilterOrder.push(offer)
+                        }
+                    })
+                }
+                this.dbFilter = this.dbFilterOrder
             }
-            this.dbFilter=this.dbFilterOrder
+        },
+        selectOffer: function (offer, index) {
+            this.indexSelected.push(index)
+            let count = 0
+            Object.values(this.indexSelected).reduce((value1, value2) => {
+                if (value1 == value2) {
+                    count++
+                }
+                return count
+            })                       
+            if (2 * count == Object.values(this.indexSelected).length) {
+                this.isActive = false
+            } else {
+                this.isActive = true
+                this.offerSelected.push([index, offer])
+            }
+        },
+        addOffer: function () {
+            let count = 0
+            let repeat = []
+            for (let i = 0; i < this.offerSelected.length; i++) {
+                if (this.offerSelected[0].indexOf(this.offerSelected[i][0]) !== -1) {
+                    count++
+                    repeat.push(this.offerSelected[i][0])
+                }
+            }
+            if (count % 2 == 0) {
+                for (let i = 0; i < repeat.length; i++) {
+                    this.offerSelected.splice(this.offerSelected[0].indexOf(repeat[i]), 1)
+                }
             } 
-            
-            
+            this.closeModal()           
         }
     }
 }
@@ -222,7 +263,7 @@ export default {
 <style scoped>
 .mainModal {
     background-color: var(--color-background-main);
-    height: 100%;
+    height: 90%;
     padding: 20px;
     line-height: 30px;
 }
@@ -270,13 +311,6 @@ export default {
 
 .priceBar input {
     width: 100%;
-}
-
-.dividerModal {
-    height: 1px;
-    width: 97%;
-    background-color: var(--color-primary-blue);
-    opacity: 0.5;
 }
 
 .kindModal p,
@@ -332,7 +366,7 @@ export default {
     margin-left: 10px;
     background-color: var(--color-background-main);
     border: none;
-    cursor:pointer;
+    cursor: pointer;
 }
 
 .kindModalOptions input {
@@ -373,5 +407,32 @@ export default {
     position: absolute;
     height: 30px;
     width: 30px;
+}
+
+.footerModal {
+    height: 10%;
+    background-color: var(--color-background-main);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footerModal button {
+    font-weight: bold;
+    border-radius: 5px;
+    margin-right: 20px;
+    height: 40px;
+}
+
+#buttonCancel {
+    width: 80px;
+    border: solid 1px var(--color-primary-blue);
+    color: var(--color-secondary-blue);
+    background-color: var(--color-background-main);
+}
+
+#buttonAdd {
+    width: 140px;
 }
 </style>

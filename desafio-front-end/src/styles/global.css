@@ -13,6 +13,9 @@
     --font-size-smaller: 20px;
     --font-size-small: 24px;
     --font-size-medium: 32px;
+    --button-desactived:#CACDCE;
+    --button-font-desactived:#A2A7A8;
+
 }
 *{
     padding:0;
@@ -25,6 +28,8 @@ html, body{
 }
 main{
     background-color: var(--color-background-home);
+    display: flex;
+    flex-direction: column;
 }
 a{
     text-decoration: none;
@@ -36,11 +41,25 @@ a:hover, .router-link-active{
 h1{
     margin: 20px;
 }
-main{
-    display: flex;
-    flex-direction: column;
-}
 .card{
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 20px;
 }
+.buttonDesactived{
+    background-color: var(--button-desactived);
+    border: solid 1px var(--button-desactived);
+    color: var(--button-font-desactived);
+}
+.buttonActived{
+    background-color: var(--color-primary-yellow);    
+    border:solid 1px var(--color-secondary-yellow);
+    color: var(--color-font-black);
+    cursor:pointer;
+}
+.dividerModal {
+    height: 2px;
+    width: 97%;
+    background-color: var(--color-primary-blue);
+    opacity: 0.2;
+}
+

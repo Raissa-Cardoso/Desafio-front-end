@@ -1,11 +1,11 @@
 <template>
     <main class="homePage">
         <div class="modal">
-            <ModalComponent />
-        </div> 
+            <ModalComponent v-on:add="addOffers"/>
+        </div>
         <div class="mask">
 
-        </div>       
+        </div>
         <div class="return">
             <img src='../assets/icons/return.png' alt="return icon" />
             <p>Minha conta</p>
@@ -23,53 +23,72 @@
             <div>2º semestre de 2019</div>
             <div>1º semestre de 2020</div>
         </div>
-        <div class="card">
-            <img src='../assets/icons/plus.png' alt="plus icon" v-on:click="showModal" />
-            <p>Adicionar bolsa</p>
-            <p>Clique para adicionar bolsas de cursos do seu interesse</p>
+        <div class="cards">
+            <div class="card">
+                <img src='../assets/icons/plus.png' alt="plus icon" v-on:click="showModal" />
+                <p>Adicionar bolsa</p>
+                <p>Clique para adicionar bolsas de cursos do seu interesse</p>
+            </div>
+            <div class="offerSelected">
+                <div v-for="(offer, index) in offers" :key="index">
+                   <CardComponent :offerSend="offer"/>
+                </div>                           
+            </div>
         </div>
+
+
     </main>
 </template>
  
 <script>
 import ModalComponent from '../components/ModalComponent.vue'
+import CardComponent from '@/components/CardComponent.vue'
 export default {
     name: 'HomePage',
     data() {
         return {
             modal: "",
             main: "",
-            card:""
+            card: "",
+            offers:[]
         }
     },
     methods: {
         showModal: function () {
             this.modal = document.querySelector('.modal')
-            this.modal.style.display = "block"                       
-            this.mask=document.querySelector('.mask')
-            this.mask.style.display = "block" 
-         }
+            this.modal.style.display = "block"
+            this.mask = document.querySelector('.mask')
+            this.mask.style.display = "block"
+        },    
+        addOffers: function(offersModal){
+            for(let i=0;i<offersModal.length;i++){
+                this.offers.push(offersModal[i][1])
+            }            
+        }
     },
     components: {
-        ModalComponent
+        ModalComponent,
+        CardComponent
     }
 }
 </script>
  
 <style scoped>
-main{
-    background-color: var(--color-background-main);    
-       
+.homePage {
+    background-color: var(--color-background-main);        
+    
+
 }
-.mask{
+
+.mask {
     display: none;
-    width: 100%;  
-    height: 100vh;      
+    width: 100%;
+    height: 100vh;
     overflow: none;
-    background-color: rgba(0,0,0,0.5);
+    background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
     position: absolute;
-    top: 0;        
+    top: 0;
 }
 
 .modal {
@@ -79,7 +98,12 @@ main{
     height: 80vh;
     border: solid 1px black;
     position: fixed;
-    align-self: center;    
+    align-self: center;
+}
+.offerSelected{
+    display: none;
+    flex-direction: row;
+    flex-wrap: wrap;    
 }
 
 .return {
@@ -148,9 +172,18 @@ h2,
 .semester :nth-child(3) {
     color: var(--color-secondary-blue);
 }
+.cards{
+    display: flex;
+    flex-direction: row;
+    width: 95%;    
+    margin-bottom: 20px;
+    margin-left: 20px;
+    
+    
+}
 
-.card {
-    width: 95%;
+.card {    
+    height: 100%;
     align-self: center;
     display: flex;
     flex-direction: column;
@@ -158,7 +191,7 @@ h2,
     justify-content: center;
     line-height: 40px;
     padding: 40px;
-    border-radius: 10px;   
+    border-radius: 10px;
     background-color: #fff;
 }
 
@@ -178,12 +211,11 @@ h2,
 }
 
 @media (min-width:1178px) {
-    .homePage{
-        height: 76vh;
-    }
-    .mask{
+
+    .mask {
         height: calc(100vh + 110px);
     }
+
     .return {
         display: none;
     }
@@ -236,8 +268,8 @@ h2,
     }
 
     .card {
-        width: 20%;
-        height: 350px;
+        width: 280px;
+        height: 400px;
         align-self: flex-start;
         margin-left: 20px;
         line-height: 20px;
