@@ -52,7 +52,6 @@ export default {
     border-radius: 10px;
     width: 100%;
     align-self: flex-start;
-    line-height: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 20px;
     display: flex;
@@ -156,89 +155,48 @@ export default {
     width: 80px;
     cursor: pointer;
 }
-@media (min-width:1178px) {
-.mainCard {
-    width: 280px;
-    height: 400px;
-    margin-left: 20px;
-}
-.mainCard img {
-    width: 140px;
-    height: 50px;
-}
-.score{
-    display: flex;
-    flex-direction: row;
-    height: 25px;
-    width: calc(100% - 20px);
-    justify-content:  center;
-}
-.score p{
-    margin-right: 10px;
-    align-self: flex-end;
-}
-.score img{
 
-    height: 20px;
-}
-#universityName,
-#universityScore,
-#kindShift,
-#titleBill {
-    font-weight: bold;
-    color: var(--color-font-black);
-    font-size: var(--font-size-smallest);
-}
-#kindShift,#titleBill{
-    margin-top: 10px;
-}
-#courseName {
-    color: var(--color-secondary-blue);
-    font-weight: bold;
-    font-size: var(--font-size-smaller);
-}
-.priceMonth{
-    display: flex;
-    flex-direction: row;
-    font-size: var(--font-size-smaller);
-}
-#fullPrice,
-#startDate,#month {
-    color: var(--color-font-black);
-    font-size: var(--font-size-smallest);
-}
-#month{
-    margin-left: 5px;
-}
-#priceDiscount {
-    color: var(--color-green);
-    font-weight: bold;
-}
-.buttonsCard{
-    display: flex;
-    flex-direction: row;
-    margin-top: 20px;
-    width: calc(100% - 20px);
-    justify-content: space-between;
-}
-#buttonDelete,
-#buttonViewOffer,
-#buttonUnavailable{
-    font-weight: bold;
-    height: 40px;
-    border-radius: 5px;
-    font-size: var(--font-size-smallest);
-}
-#buttonViewOffer,
-#buttonUnavailable {
-    width: 120px;
-}
-#buttonDelete {
-    background-color: #fff;
-    color: var(--color-secondary-blue);
-    border: solid 1px var(--color-secondary-blue);
-    width: 80px;
-    cursor: pointer;
-}
+@media (min-width:1178px) {
+    .mainCard {
+        width: 280px;
+        height: 400px;
+        margin-left: 20px;
+    }
+
+    .mainCard img {
+        width: 140px;
+        height: 50px;
+    }
+
+    #universityName,
+    #universityScore,
+    #kindShift,
+    #titleBill {
+        font-size: var(--font-size-smallest);
+    }
+
+    #courseName {
+        font-size: var(--font-size-smaller);
+    }
+
+    .priceMonth {
+        font-size: var(--font-size-smaller);
+    }
+
+    #fullPrice,
+    #startDate,
+    #month {
+        font-size: var(--font-size-smallest);
+    }
+
+    #buttonDelete,
+    #buttonViewOffer,
+    #buttonUnavailable {
+        font-size: var(--font-size-smallest);
+    }
+    .score img {
+       align-self: center;
+       margin-bottom: 10px;
+    }
 }
 </style>

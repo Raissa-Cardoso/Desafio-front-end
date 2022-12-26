@@ -165,9 +165,7 @@ header :nth-child(2),
     .navHeader {
         height: 40px;
         font-size: var(--font-size-smallest);
-        display: flex;
         justify-content: flex-start;
-        padding: 0 30px;
     }
 
     .navHeader p {

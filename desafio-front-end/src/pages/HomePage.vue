@@ -35,11 +35,8 @@
                 </div>
             </div>
         </div>
-
-
     </main>
 </template>
-
 <script>
 import ModalComponent from '../components/ModalComponent.vue'
 import CardComponent from '@/components/CardComponent.vue'
@@ -48,8 +45,7 @@ export default {
     data() {
         return {
             modal: "",
-            main: "",
-            card: "",
+            mask: "",
             offers: []
         }
     },
@@ -246,14 +242,8 @@ h2,
     }
 
     .modal {
-        display: none;
-        z-index: 100;
         width: 50vw;
         height: 80vh;
-        border: solid 1px black;
-        position: absolute;
-        align-self: center;
-
     }
 
     .path {
@@ -316,7 +306,6 @@ h2,
     }
 
     .card :nth-child(2) {
-        font-weight: bold;
         font-size: var(--font-size-smaller);
         margin-bottom: 20px;
     }
@@ -325,6 +314,5 @@ h2,
         font-size: var(--font-size-smallest);
         text-align: center;
     }
-
 }
 </style>
