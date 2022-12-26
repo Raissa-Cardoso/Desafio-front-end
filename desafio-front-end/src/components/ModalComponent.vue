@@ -74,15 +74,15 @@
     </main>
     <footer class="footerModal">
         <button id="buttonCancel">Cancelar</button>
-        <button id="buttonAdd" v-on:click="addOffer"  @click="$emit('add',this.offerSelected)"
+        <button id="buttonAdd" v-on:click="addOffer"
             :class="{ buttonActived: isActive, buttonDesactived: !isActive }">Adicionar bolsa(s)</button>
     </footer>
 </template>
- 
 <script>
 import db from '../data/db.json'
 export default {
     name: 'ModalComponent',
+    emits: ["add"],
     data() {
         return {
             db: db,
@@ -106,6 +106,7 @@ export default {
             order: false,
             isActive: false,
             indexSelected: []
+
         }
     },
     mounted() {
@@ -124,8 +125,6 @@ export default {
         this.dbCourseOrder = this.dbCourse.sort()
         this.dbUniversityOrder = this.dbUniversity.sort()
         this.dbFilter = this.db
-
-
     },
     methods: {
         closeModal: function () {
@@ -133,7 +132,7 @@ export default {
             this.modal.style.display = "none"
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "none"
-            if(this.offerSelected.length!==0){
+            if (this.offerSelected.length !== 0) {
                 document.querySelector('.offerSelected').style.display = "flex"
             }
         },
@@ -146,13 +145,11 @@ export default {
             this.city = document.querySelector('#city').value
             this.filters[0] = this.city
             this.changeFilters()
-
         },
         changeCourse: function () {
             this.course = document.querySelector('#course').value
             this.filters[1] = this.course
             this.changeFilters()
-
         },
         changeKind: function (kindSelected) {
             if (kindSelected == "presencial") {
@@ -232,7 +229,7 @@ export default {
                     count++
                 }
                 return count
-            })                       
+            })
             if (2 * count == Object.values(this.indexSelected).length) {
                 this.isActive = false
             } else {
@@ -253,17 +250,18 @@ export default {
                 for (let i = 0; i < repeat.length; i++) {
                     this.offerSelected.splice(this.offerSelected[0].indexOf(repeat[i]), 1)
                 }
-            } 
-            this.closeModal()           
+            }
+            this.$emit('add',this.offerSelected)
+            this.closeModal()
         }
     }
 }
 </script>
- 
+
 <style scoped>
 .mainModal {
     background-color: var(--color-background-main);
-    height: 90%;
+    height: 100vh;
     padding: 20px;
     line-height: 30px;
 }
@@ -271,17 +269,17 @@ export default {
 #title,
 #subtitle {
     color: var(--color-font-black);
-    width: 30%;
+    width: 40vw;
 }
 
 #title {
-    font-size: var(--font-size-smaller);
+    font-size: var(--font-size-small);
     font-weight: bold;
 }
 
 #subtitle,
 .scholarshipModal {
-    font-size: var(--font-size-smallest);
+    font-size: var(--font-size-smaller);
     margin-right: 40px;
 }
 
@@ -293,6 +291,7 @@ export default {
 .scholarshipModal :nth-child(3) {
     font-weight: bold;
     color: var(--color-green);
+    font-size: 16px;
 }
 
 .kindPrice,
@@ -305,7 +304,7 @@ export default {
 
 .kindModal,
 .priceModal {
-    width: 35%;
+    width: 45%;
     height: 120px;
 }
 
@@ -317,7 +316,7 @@ export default {
 .cityCourse,
 .priceModal :nth-child(1),
 .results p {
-    font-size: var(--font-size-smallest);
+    font-size: 1.3vw;
     font-weight: bold;
     margin-top: 10px;
 }
@@ -329,6 +328,7 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
+    font-size: 18px;
 }
 
 .scholarshipModalPorcentage :nth-child(1) {
@@ -355,7 +355,7 @@ export default {
 }
 
 .courseModal :nth-child(2) {
-    font-size: var(--font-size-smallest);
+    font-size: var(--font-size-smaller);
 }
 
 .order button {
@@ -381,13 +381,12 @@ export default {
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-between;
-    margin-right: 40px;
 }
 
 .cityCourse select {
-    width: 350px;
+    width: 34vw;
     height: 30px;
+    margin-right:6vw ;
 }
 
 .city,
@@ -434,5 +433,187 @@ export default {
 
 #buttonAdd {
     width: 140px;
+}
+@media (min-width:1178px) {
+.mainModal {
+    background-color: var(--color-background-main);
+    height: 90%;
+    padding: 20px;
+    line-height: 30px;
+}
+
+#title,
+#subtitle {
+    color: var(--color-font-black);
+    width: 30%;
+}
+
+#title {
+    font-size: var(--font-size-smaller);
+    font-weight: bold;
+}
+
+#subtitle,
+.scholarshipModal {
+    font-size: var(--font-size-smallest);
+    margin-right: 40px;
+}
+
+.scholarshipModal {
+    width: 20%;
+}
+
+.scholarshipModal :nth-child(2),
+.scholarshipModal :nth-child(3) {
+    font-weight: bold;
+    color: var(--color-green);
+}
+
+.kindPrice,
+.results {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-right: 20px;
+}
+
+.kindModal,
+.priceModal {
+    width: 20vw;
+    height: 120px;
+    margin-right: 22px;
+}
+
+.priceBar input {
+    width: 100%;
+}
+
+.kindModal p,
+.cityCourse,
+.priceModal :nth-child(1),
+.results p {
+    font-size: 12px;
+    font-weight: bold;
+    margin-top: 10px;
+
+}
+
+.kindModalOptions,
+.order,
+.universityModal,
+.scholarshipModalPorcentage {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size:var(--font-size-smallest);
+}
+
+.scholarshipModalPorcentage :nth-child(1) {
+    margin-right: 5px;
+}
+
+.universitiesModal {
+    overflow-x: scroll;
+}
+
+.universityModal img {
+    width: 30%;
+    height: 35px;
+    object-fit: contain;
+}
+
+.courseModal {
+    width: 50%;
+}
+
+.courseModal :nth-child(1) {
+    font-weight: bold;
+    color: var(--color-secondary-blue);
+}
+
+.courseModal :nth-child(2) {
+    font-size: var(--font-size-smallest);
+}
+
+.order button {
+    color: var(--color-secondary-blue);
+    font-weight: bold;
+    height: 25px;
+    align-self: flex-end;
+    margin-bottom: 3px;
+    margin-left: 10px;
+    background-color: var(--color-background-main);
+    border: none;
+    cursor: pointer;
+}
+
+.kindModalOptions input {
+    margin-right: 10px;
+}
+
+#kindEad {
+    margin-left: 20px;
+}
+
+.cityCourse {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    margin-right: 20px;
+}
+
+.cityCourse select {
+    width: 20vw;
+    height: 30px;
+}
+
+.city,
+.course {
+    display: flex;
+    flex-direction: column;
+    width: 24vw;
+}
+
+.universitiesModal {
+    display: flex;
+    flex-direction: column;
+}
+
+.closeModal {
+    top: -30px;
+    right: 0;
+    position: absolute;
+    height: 30px;
+    width: 30px;
+}
+
+.footerModal {
+    height: 10%;
+    background-color: var(--color-background-main);
+    display: flex;
+    flex-direction: row;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.footerModal button {
+    font-weight: bold;
+    border-radius: 5px;
+    margin-right: 20px;
+    height: 40px;
+}
+
+#buttonCancel {
+    width: 80px;
+    border: solid 1px var(--color-primary-blue);
+    color: var(--color-secondary-blue);
+    background-color: var(--color-background-main);
+}
+
+#buttonAdd {
+    width: 140px;
+}
 }
 </style>

@@ -38,27 +38,24 @@
         </div>
     </footer>
 </template>
-
 <script>
 export default {
     name: 'FooterComponent'
 }
 </script>
-
 <style scoped>
 footer {
     background-color: var(--color-primary-blue);
     display: flex;
     flex-direction: column;
     color: var(--color-font-white);
-    font-size: var(--font-size-small);    
+    font-size: var(--font-size-small);
+    width: 100%;
 }
 
 .footerTel,
 .footerEmail div {
-    background-color: var(--color-secondary-blue); 
-    
-    
+    background-color: var(--color-secondary-blue);
 }
 
 .footerSignature,
@@ -68,7 +65,7 @@ footer {
     flex-direction: row;
     align-items: center;
     justify-content: center;
-    height: 130px;            
+    height: 130px;
 }
 
 .footerEmail,
@@ -98,7 +95,6 @@ footer {
 .footerChat img,
 .footerInfo img {
     height: 80px;
-
 }
 
 .footerSignature img {
@@ -110,6 +106,8 @@ footer {
         flex-direction: row;
         flex-wrap: wrap;
         font-size: var(--font-size-smallest);
+        margin-top: 20px;
+
     }
 
     .chatLive,
@@ -134,7 +132,6 @@ footer {
     }
 
     .chat {
-
         border: solid 1px purple;
     }
 
@@ -174,7 +171,6 @@ footer {
         margin-left: 0px;
         margin-right: 0px;
     }
-
 
     .footerSignature {
         width: 100%;

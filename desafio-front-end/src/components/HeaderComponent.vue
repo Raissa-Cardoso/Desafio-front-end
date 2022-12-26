@@ -2,8 +2,8 @@
     <header>
         <div class="info">
             <img src='../assets/icons/info.png' alt="info icon" />
-            <p>Ajuda</p>
-            <p>Como funciona</p>
+            <p id="infoHelp">Ajuda</p>
+            <p id="infoHowWorks">Como funciona</p>
         </div>
         <img class="divider" src='../assets/icons/divider.png' alt="divider icon" />
         <div class="infoTel">
@@ -67,7 +67,7 @@ header p {
     font-size: var(--font-size-small);
 }
 
-.info :nth-child(3),
+#infoHowWorks,
 .infoTel,
 header :nth-child(2),
 .login :nth-child(1),
@@ -116,7 +116,7 @@ header :nth-child(2),
         font-size: var(--font-size-smaller);
     }
 
-    .info :nth-child(2),
+    #infoHelp,
     header :nth-child(4),
     header :nth-child(6),
     .login :nth-child(3),
@@ -124,7 +124,7 @@ header :nth-child(2),
         display: none;
     }
 
-    .info :nth-child(3),
+    #infoHowWorks,
     .infoTel,
     header :nth-child(2),
     .login :nth-child(1),

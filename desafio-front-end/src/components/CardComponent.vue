@@ -5,9 +5,10 @@
         <p id="courseName">{{ this.offerSend.course.name }}</p>
         <div class="score">
             <p id="universityScore">{{ this.offerSend.university.score }}</p>
-            <img v-if="this.offerSend.university.score<3.6" src='../assets/icons/smallScore.png' />
-            <img v-if="this.offerSend.university.score>3.8 && this.offerSend.university.score<4.4" src='../assets/icons/mediumScore.png' />
-            <img v-if="this.offerSend.university.score>4.4" src='../assets/icons/bigScore.png' />
+            <img v-if="this.offerSend.university.score < 3.6" src='../assets/icons/smallScore.png' />
+            <img v-if="this.offerSend.university.score > 3.8 && this.offerSend.university.score < 4.4"
+                src='../assets/icons/mediumScore.png' />
+            <img v-if="this.offerSend.university.score > 4.4" src='../assets/icons/bigScore.png' />
         </div>
         <div class="dividerModal"></div>
         <p id="kindShift">{{ (this.offerSend.course.kind).toUpperCase() }} * {{
@@ -17,10 +18,13 @@
         <div class="dividerModal"></div>
         <p id="titleBill">Mensalidade com o Quero Bolsa:</p>
         <p id="fullPrice"><s>R$ {{ this.offerSend.full_price }}</s></p>
-        <div class="priceMonth"><p id="priceDiscount">R$ {{ this.offerSend.price_with_discount }}</p><p id="month">/mês</p></div>
+        <div class="priceMonth">
+            <p id="priceDiscount">R$ {{ this.offerSend.price_with_discount }}</p>
+            <p id="month">/mês</p>
+        </div>
         <div class="buttonsCard">
             <button id="buttonDelete" v-on:click="deleteOffer">Excluir</button>
-            <button id="buttonViewOffer" v-if="this.offerSend.enabled == true" class="buttonActived">Ver oferta</button>            
+            <button id="buttonViewOffer" v-if="this.offerSend.enabled == true" class="buttonActived">Ver oferta</button>
             <button id="buttonUnavailable" class="buttonDesactived" v-else>Indisponível</button>
         </div>
 
@@ -33,11 +37,9 @@ export default {
     name: 'CardComponent',
     props: {
         offerSend: {}
-        
     },
     methods: {
-        deleteOffer:function(){
-            console.log(document.querySelector('.mainCard'))
+        deleteOffer: function () {
             document.querySelector('.mainCard').remove()
         }
     }
@@ -48,10 +50,8 @@ export default {
 .mainCard {
     background-color: #fff;
     border-radius: 10px;
-    width: 280px;
-    height: 400px;
+    width: 100%;
     align-self: flex-start;
-    margin-left: 20px;
     line-height: 20px;
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 20px;
@@ -63,24 +63,26 @@ export default {
 }
 
 .mainCard img {
-    width: 140px;
-    height: 50px;
+    width: 30vw;
     object-fit: contain;
 }
-.score{
+
+.score {
+    margin-top: 10px;
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     height: 25px;
-    width: calc(100% - 20px);    
-    justify-content:  center;   
+    width: calc(100% - 20px);
+    justify-content: center;
 }
-.score p{
+
+.score p {
     margin-right: 10px;
-    align-self: flex-end;    
+    align-self: flex-end;
 }
-.score img{
-    
-    height: 20px;    
+
+.score img {
+    height: 20px;
 }
 
 #universityName,
@@ -89,6 +91,103 @@ export default {
 #titleBill {
     font-weight: bold;
     color: var(--color-font-black);
+    font-size: var(--font-size-smaller);
+}
+
+#kindShift,
+#titleBill {
+    margin-top: 10px;
+}
+
+#courseName {
+    color: var(--color-secondary-blue);
+    font-weight: bold;
+    font-size: var(--font-size-small);
+}
+
+.priceMonth {
+    display: flex;
+    flex-direction: row;
+    font-size: var(--font-size-small);
+}
+
+#fullPrice,
+#startDate,
+#month {
+    color: var(--color-font-black);
+    font-size: var(--font-size-smaller);
+}
+
+#month {
+    margin-left: 5px;
+}
+
+#priceDiscount {
+    color: var(--color-green);
+    font-weight: bold;
+}
+
+.buttonsCard {
+    display: flex;
+    flex-direction: row;
+    margin-top: 20px;
+    width: calc(100% - 20px);
+    justify-content: space-between;
+}
+
+#buttonDelete,
+#buttonViewOffer,
+#buttonUnavailable {
+    font-weight: bold;
+    height: 40px;
+    border-radius: 5px;
+    font-size: var(--font-size-smaller);
+}
+
+#buttonViewOffer,
+#buttonUnavailable {
+    width: 120px;
+}
+
+#buttonDelete {
+    background-color: #fff;
+    color: var(--color-secondary-blue);
+    border: solid 1px var(--color-secondary-blue);
+    width: 80px;
+    cursor: pointer;
+}
+@media (min-width:1178px) {
+.mainCard {
+    width: 280px;
+    height: 400px;
+    margin-left: 20px;
+}
+.mainCard img {
+    width: 140px;
+    height: 50px;
+}
+.score{
+    display: flex;
+    flex-direction: row;
+    height: 25px;
+    width: calc(100% - 20px);
+    justify-content:  center;
+}
+.score p{
+    margin-right: 10px;
+    align-self: flex-end;
+}
+.score img{
+
+    height: 20px;
+}
+#universityName,
+#universityScore,
+#kindShift,
+#titleBill {
+    font-weight: bold;
+    color: var(--color-font-black);
+    font-size: var(--font-size-smallest);
 }
 #kindShift,#titleBill{
     margin-top: 10px;
@@ -96,10 +195,12 @@ export default {
 #courseName {
     color: var(--color-secondary-blue);
     font-weight: bold;
+    font-size: var(--font-size-smaller);
 }
 .priceMonth{
     display: flex;
     flex-direction: row;
+    font-size: var(--font-size-smaller);
 }
 #fullPrice,
 #startDate,#month {
@@ -116,7 +217,7 @@ export default {
 .buttonsCard{
     display: flex;
     flex-direction: row;
-    margin-top: 20px;    
+    margin-top: 20px;
     width: calc(100% - 20px);
     justify-content: space-between;
 }
@@ -128,17 +229,16 @@ export default {
     border-radius: 5px;
     font-size: var(--font-size-smallest);
 }
-
 #buttonViewOffer,
 #buttonUnavailable {
     width: 120px;
 }
-
 #buttonDelete {
     background-color: #fff;
     color: var(--color-secondary-blue);
     border: solid 1px var(--color-secondary-blue);
     width: 80px;
     cursor: pointer;
+}
 }
 </style>

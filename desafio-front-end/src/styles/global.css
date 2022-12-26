@@ -6,8 +6,8 @@
     --color-primary-yellow:#FDCB13;
     --color-secondary-yellow: #DE9E1F;
     --color-green:#0FA866;
-    --color-font-white:#fff; 
-    --color-font-black:#1F2D30;    
+    --color-font-white:#fff;
+    --color-font-black:#1F2D30;
     --color-modal-overlay: rgba(31, 45, 48,0.88);
     --font-size-smallest: 14px;
     --font-size-smaller: 20px;
@@ -21,7 +21,7 @@
     padding:0;
     margin:0;
     box-sizing: border-box;
-    font-family: sans-serif;    
+    font-family: sans-serif;
 }
 html, body{
     background-color: var(--color-background-home);
@@ -33,7 +33,7 @@ main{
 }
 a{
     text-decoration: none;
-    transition: 0.2s opacity;    
+    transition: 0.2s opacity;
 }
 a:hover, .router-link-active{
     opacity:0.4;
@@ -51,7 +51,7 @@ h1{
     color: var(--button-font-desactived);
 }
 .buttonActived{
-    background-color: var(--color-primary-yellow);    
+    background-color: var(--color-primary-yellow);
     border:solid 1px var(--color-secondary-yellow);
     color: var(--color-font-black);
     cursor:pointer;
@@ -62,4 +62,3 @@ h1{
     background-color: var(--color-primary-blue);
     opacity: 0.2;
 }
-

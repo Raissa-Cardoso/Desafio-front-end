@@ -1,7 +1,7 @@
 <template>
     <main class="homePage">
         <div class="modal">
-            <ModalComponent v-on:add="addOffers"/>
+            <ModalComponent v-on:add="addOffers" />
         </div>
         <div class="mask">
 
@@ -31,15 +31,15 @@
             </div>
             <div class="offerSelected">
                 <div v-for="(offer, index) in offers" :key="index">
-                   <CardComponent :offerSend="offer"/>
-                </div>                           
+                    <CardComponent :offerSend="offer" />
+                </div>
             </div>
         </div>
 
 
     </main>
 </template>
- 
+
 <script>
 import ModalComponent from '../components/ModalComponent.vue'
 import CardComponent from '@/components/CardComponent.vue'
@@ -50,7 +50,7 @@ export default {
             modal: "",
             main: "",
             card: "",
-            offers:[]
+            offers: []
         }
     },
     methods: {
@@ -59,11 +59,11 @@ export default {
             this.modal.style.display = "block"
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "block"
-        },    
-        addOffers: function(offersModal){
-            for(let i=0;i<offersModal.length;i++){
+        },
+        addOffers: function (offersModal) {
+            for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
-            }            
+            }
         }
     },
     components: {
@@ -72,38 +72,40 @@ export default {
     }
 }
 </script>
- 
+
 <style scoped>
 .homePage {
-    background-color: var(--color-background-main);        
-    
-
+    background-color: var(--color-background-main);
 }
 
 .mask {
     display: none;
     width: 100%;
-    height: 100vh;
+    height: calc(100% + 500px);
     overflow: none;
     background-color: rgba(0, 0, 0, 0.5);
     z-index: 1;
-    position: absolute;
+    position: fixed;
     top: 0;
+    left: 0;
 }
 
 .modal {
     display: none;
     z-index: 100;
-    width: 70vw;
-    height: 80vh;
+    width: 80vw;
+    height: 100vh;
     border: solid 1px black;
-    position: fixed;
+    position: absolute;
     align-self: center;
+
 }
-.offerSelected{
+
+.offerSelected {
     display: none;
-    flex-direction: row;
-    flex-wrap: wrap;    
+    flex-direction: column;
+    flex-wrap: wrap;
+    width: 100%;
 }
 
 .return {
@@ -172,18 +174,18 @@ h2,
 .semester :nth-child(3) {
     color: var(--color-secondary-blue);
 }
-.cards{
+
+.cards {
     display: flex;
-    flex-direction: row;
-    width: 95%;    
+    flex-direction: column;
+    width: 95%;
     margin-bottom: 20px;
     margin-left: 20px;
-    
-    
 }
 
-.card {    
+.card {
     height: 100%;
+    width: 100%;
     align-self: center;
     display: flex;
     flex-direction: column;
@@ -213,11 +215,45 @@ h2,
 @media (min-width:1178px) {
 
     .mask {
-        height: calc(100vh + 110px);
+        height: calc(100vh + 230px);
+    }
+
+    .cards,
+    .offerSelected {
+        flex-direction: row;
+
+    }
+
+    .offerSelected {
+        width: 80%;
+        margin-right: 0;
+    }
+
+    .cards {
+        width: 95%;
+        margin-bottom: 20px;
+        margin-left: 20px;
+
+    }
+
+    .card {
+        width: 280px;
+        height: 400px;
     }
 
     .return {
         display: none;
+    }
+
+    .modal {
+        display: none;
+        z-index: 100;
+        width: 50vw;
+        height: 80vh;
+        border: solid 1px black;
+        position: absolute;
+        align-self: center;
+
     }
 
     .path {
@@ -273,12 +309,10 @@ h2,
         align-self: flex-start;
         margin-left: 20px;
         line-height: 20px;
-
     }
 
     .card img {
         height: 60px;
-
     }
 
     .card :nth-child(2) {
@@ -290,7 +324,6 @@ h2,
     .card :nth-child(3) {
         font-size: var(--font-size-smallest);
         text-align: center;
-
     }
 
 }
