@@ -441,7 +441,7 @@ export default {
 
     #title,
     #subtitle {
-        width: 30%;
+        width: 40%;
     }
 
     #title {
