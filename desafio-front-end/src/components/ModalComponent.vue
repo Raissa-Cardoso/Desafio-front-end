@@ -8,14 +8,14 @@
                 <label htmlFor="city">SELECIONE SUA CIDADE</label>
                 <select id="city" v-on:change="changeCity">
                     <option value=""></option>
-                    <option v-for="(city, index) in dbCityOrder" :key="index"> {{ city }}</option>
+                    <option v-for="(city, index) in dbCity" :key="index"> {{ city }}</option>
                 </select>
             </div>
             <div class="course">
                 <label htmlFor="course">SELECIONE O CURSO DE SUA PREFERÊNCIA</label>
                 <select id="course" v-on:change="changeCourse">
                     <option value=""></option>
-                    <option v-for="(course, index) in dbCourseOrder" :key="index"> {{ course }}</option>
+                    <option v-for="(course, index) in dbCourse" :key="index"> {{ course }}</option>
                 </select>
             </div>
         </div>
@@ -47,7 +47,8 @@
             </div>
             <div class='order'>
                 <p>Ordenar por </p>
-                <button v-on:click="universitiesOrder">Nome da faculdade</button>
+                <button v-on:click="universitiesOrder()">Nome da faculdade</button>
+                <img src='../assets/icons/dropUniversities.png' alt="dropUniversitiesicon" />
             </div>
         </div>
         <div class="dividerModal"></div>
@@ -91,12 +92,9 @@ export default {
             filters: ["", "", "", "", ""],
             countFilters: 0,
             filter: 0,
-            dbUniversity: [],
-            dbUniversityOrder: [],
-            dbCity: [],
-            dbCityOrder: [],
-            dbCourse: [],
-            dbCourseOrder: [],
+            dbUniversity: [],            
+            dbCity: [],            
+            dbCourse: [],            
             offerSelected: [],
             priceChanged: 0,
             city: "",
@@ -119,10 +117,10 @@ export default {
             if (this.dbUniversity.indexOf(this.db[i].university.name) == -1) {
                 this.dbUniversity.push(db[i].university.name)
             }
-        }
-        this.dbCityOrder = this.dbCity.sort()
-        this.dbCourseOrder = this.dbCourse.sort()
-        this.dbUniversityOrder = this.dbUniversity.sort()
+        }        
+        this.dbCity= this.dbCity.sort()
+        this.dbCourse = this.dbCourse.sort()
+        this.dbUniversity = this.dbUniversity.sort()
         this.dbFilter = this.db
     },
     methods: {
@@ -210,9 +208,9 @@ export default {
         universitiesOrder: function () {
             this.order = !this.order
             if (this.order == true) {
-                for (let i = 0; i < this.dbUniversityOrder.length; i++) {
+                for (let i = 0; i < this.dbUniversity.length; i++) {
                     this.dbFilter.map(offer => {
-                        if (offer.university.name.indexOf(this.dbUniversityOrder[i]) !== -1) {
+                        if (offer.university.name.indexOf(this.dbUniversity[i]) !== -1) {
                             this.dbFilterOrder.push(offer)
                         }
                     })
@@ -357,6 +355,7 @@ export default {
     font-size: var(--font-size-smaller);
 }
 
+
 .order button {
     color: var(--color-secondary-blue);
     font-weight: bold;
@@ -366,6 +365,11 @@ export default {
     background-color: var(--color-background-main);
     border: none;
     cursor: pointer;
+}
+
+.order img {       
+    height: 2vh;
+    width: 1.5vw;
 }
 
 .kindModalOptions input {
@@ -486,6 +490,11 @@ export default {
     .order button {
         align-self: flex-end;
         margin-bottom: 3px;
+    }
+    .order img {
+    margin-top: 4%;    
+    height: 2vh;
+    width: 1.5vw;
     }
 
     .cityCourse {
