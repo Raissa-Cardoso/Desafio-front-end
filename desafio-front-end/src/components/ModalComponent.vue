@@ -8,14 +8,14 @@
                 <label htmlFor="city">SELECIONE SUA CIDADE</label>
                 <select id="city" v-on:change="changeCity">
                     <option value=""></option>
-                    <option v-for="(city, index) in dbCityOrder" :key="index"> {{ city }}</option>
+                    <option v-for="(city, index) in dbCity" :key="index"> {{ city }}</option>
                 </select>
             </div>
             <div class="course">
                 <label htmlFor="course">SELECIONE O CURSO DE SUA PREFERÊNCIA</label>
                 <select id="course" v-on:change="changeCourse">
                     <option value=""></option>
-                    <option v-for="(course, index) in dbCourseOrder" :key="index"> {{ course }}</option>
+                    <option v-for="(course, index) in dbCourse" :key="index"> {{ course }}</option>
                 </select>
             </div>
         </div>
@@ -47,7 +47,8 @@
             </div>
             <div class='order'>
                 <p>Ordenar por </p>
-                <button v-on:click="universitiesOrder">Nome da faculdade</button>
+                <button v-on:click="universitiesOrder()">Nome da faculdade</button>
+                <img src='../assets/icons/dropUniversities.png' alt="dropUniversitiesicon" />
             </div>
         </div>
         <div class="dividerModal"></div>
@@ -82,21 +83,16 @@
 import db from '../data/db.json'
 export default {
     name: 'ModalComponent',
-    emits: ["add"],
+    emits: ["add"],        
     data() {
         return {
             db: db,
             dbFilter: [],
-            dbFilterOrder: [],
-            filters: ["", "", "", "", ""],
-            countFilters: 0,
-            filter: 0,
-            dbUniversity: [],
-            dbUniversityOrder: [],
-            dbCity: [],
-            dbCityOrder: [],
-            dbCourse: [],
-            dbCourseOrder: [],
+            dbFilterOrder: [],            
+            filters:{},
+            dbUniversity: [],            
+            dbCity: [],            
+            dbCourse: [],            
             offerSelected: [],
             priceChanged: 0,
             city: "",
@@ -105,7 +101,7 @@ export default {
             ead: false,
             order: false,
             isActive: false,
-            indexSelected: []
+            indexSelected: []            
         }
     },
     mounted() {
@@ -119,12 +115,12 @@ export default {
             if (this.dbUniversity.indexOf(this.db[i].university.name) == -1) {
                 this.dbUniversity.push(db[i].university.name)
             }
-        }
-        this.dbCityOrder = this.dbCity.sort()
-        this.dbCourseOrder = this.dbCourse.sort()
-        this.dbUniversityOrder = this.dbUniversity.sort()
-        this.dbFilter = this.db
-    },
+        }        
+        this.dbCity= this.dbCity.sort()
+        this.dbCourse = this.dbCourse.sort()
+        this.dbUniversity = this.dbUniversity.sort()
+        this.dbFilter = this.db                     
+    },    
     methods: {
         closeModal: function () {
             this.modal = document.querySelector('.modal')
@@ -136,83 +132,99 @@ export default {
             }
         },
         changePrice: function () {
-            this.priceChanged = document.querySelector('#changePrice').value
-            this.filters[4] = this.priceChanged
+            this.priceChanged = document.querySelector('#changePrice').value            
+            this.filters.price_with_discount=this.priceChanged
             this.changeFilters()
         },
         changeCity: function () {
-            this.city = document.querySelector('#city').value
-            this.filters[0] = this.city
+            this.city = document.querySelector('#city').value            
+            this.filters.city=this.city
             this.changeFilters()
         },
         changeCourse: function () {
-            this.course = document.querySelector('#course').value
-            this.filters[1] = this.course
+            this.course = document.querySelector('#course').value            
+            this.filters.name=this.course
             this.changeFilters()
         },
         changeKind: function (kindSelected) {
             if (kindSelected == "presencial") {
                 this.presencial = !this.presencial
-                if (this.presencial == true) {
-                    this.filters[2] = "Presencial"
-                    this.changeFilters()
-                } else {
-                    this.filters[2] = ""
-                    this.changeFilters()
-                }
             }
             if (kindSelected == "ead") {
                 this.ead = !this.ead
-                if (this.ead == true) {
-                    this.filters[3] = "EaD"
-                    this.changeFilters()
-                } else {
-                    this.filters[3] = ""
-                    this.changeFilters()
+            }
+            this.filters.kind={Presencial:this.presencial,EaD:this.ead}
+            this.changeFilters()           
+        },
+        changeFilters: function () { 
+            if(this.dbFilter=='' || Object.values(this.filters).every(value=>value=='')){
+                this.dbFilter=this.db 
+            }              
+            const campus=['city']
+            const course=['name','kind']
+            const offer=['price_with_discount']              
+            Object.keys(this.filters).forEach((filter,index)=>{
+                if(Object.values(this.filters)[index]!=''){
+                    if(campus.indexOf(filter)!=-1){                    
+                        this.filterCampus(filter)                    
+                    }
+                    if(course.indexOf(filter)!=-1){
+                        this.filterCourse(filter)
+                    }
+                    if(offer.indexOf(filter)!=-1){
+                        this.filterOffer(filter)
+                    }
                 }
+            })
+        },
+        filterCampus:function(filter){
+            if (this.dbFilter.filter(offer => offer.campus[filter] === this.city).length !== 0) {                
+                this.dbFilter = this.dbFilter.filter(offer => offer.campus[filter] === this.city)                
+            }else{
+                this.clearFilter()                
             }
         },
-        changeFilters: function () {
-            this.dbFilter = this.db
-            if (this.dbFilter.filter(offer => offer.campus.city === this.city).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.campus.city === this.city)
+        filterCourse:function(filter){
+            if(filter=='name') this.filterNameCourse()
+            if(filter=='kind') this.filterKind()
+        },
+        filterNameCourse:function(){
+            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {                
+                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)                
+            }else{
+                this.clearFilter()
             }
-            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)
-            }
-            if (this.presencial !== this.ead) {
-                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[2]).length !== 0) {
-                    this.countFilters++
-                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")
+        },
+        filterKind(){    
+            if(this.presencial==this.ead){
+                this.dbFilter=this.db
+                delete this.filters.kind                
+                this.changeFilters()
+            }else{
+                if(this.presencial && (this.dbFilter.filter(offer => offer.course.kind === "Presencial").length !== 0)){                                  
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")                   
                 }
-                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[3]).length !== 0) {
-                    this.countFilters++
+                if(this.ead && (this.dbFilter.filter(offer => offer.course.kind === "EaD").length !== 0)){                                   
                     this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "EaD")
-                }
-            } else if (this.presencial == this.ead == true) {
-                this.countFilters += 2
+                }   
+            }                     
+        },
+        filterOffer:function(filter){
+            if (this.dbFilter.filter(offer => offer[filter] <= this.priceChanged).length !== 0) {               
+                this.dbFilter = this.dbFilter.filter(offer => offer[filter] <= this.priceChanged)                
+            }else{
+                this.clearFilter()
             }
-            if (this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged)
-            }
-            for (let i = 0; i < this.filters.length; i++) {
-                if (this.filters[i] !== "") { this.filter++ }
-            }
-            if (this.filter > this.countFilters) {
-                this.dbFilter = []
-            }
-            this.countFilters = 0
-            this.filter = 0
+        },        
+        clearFilter:function(){
+            this.dbFilter=''
         },
         universitiesOrder: function () {
             this.order = !this.order
             if (this.order == true) {
-                for (let i = 0; i < this.dbUniversityOrder.length; i++) {
+                for (let i = 0; i < this.dbUniversity.length; i++) {
                     this.dbFilter.map(offer => {
-                        if (offer.university.name.indexOf(this.dbUniversityOrder[i]) !== -1) {
+                        if (offer.university.name.indexOf(this.dbUniversity[i]) !== -1) {
                             this.dbFilterOrder.push(offer)
                         }
                     })
@@ -236,7 +248,7 @@ export default {
                 this.offerSelected.push([index, offer])
             }
         },
-        addOffer: function () {
+        addOffer: function () {           
             let count = 0
             let repeat = []
             for (let i = 0; i < this.offerSelected.length; i++) {
@@ -250,8 +262,13 @@ export default {
                     this.offerSelected.splice(this.offerSelected[0].indexOf(repeat[i]), 1)
                 }
             }
-            this.$emit('add', this.offerSelected)
-            this.closeModal()
+            this.$emit('add', this.offerSelected)   
+            this.closeModal() 
+            this.clearModal()          
+        },
+        clearModal:function(){
+            this.indexSelected=[] 
+            this.offerSelected=[]                        
         }
     }
 }
@@ -357,6 +374,7 @@ export default {
     font-size: var(--font-size-smaller);
 }
 
+
 .order button {
     color: var(--color-secondary-blue);
     font-weight: bold;
@@ -366,6 +384,11 @@ export default {
     background-color: var(--color-background-main);
     border: none;
     cursor: pointer;
+}
+
+.order img {       
+    height: 2vh;
+    width: 1.5vw;
 }
 
 .kindModalOptions input {
@@ -486,6 +509,11 @@ export default {
     .order button {
         align-self: flex-end;
         margin-bottom: 3px;
+    }
+    .order img {
+    margin-top: 4%;    
+    height: 2vh;
+    width: 1.5vw;
     }
 
     .cityCourse {
