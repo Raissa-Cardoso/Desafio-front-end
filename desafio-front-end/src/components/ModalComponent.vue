@@ -88,11 +88,8 @@ export default {
         return {
             db: db,
             dbFilter: [],
-            dbFilterOrder: [],
-            filters: ["", "", "", "", ""],
-            filters2:{},
-            countFilters: 0,
-            filter: 0,
+            dbFilterOrder: [],            
+            filters:{},
             dbUniversity: [],            
             dbCity: [],            
             dbCourse: [],            
@@ -135,56 +132,39 @@ export default {
             }
         },
         changePrice: function () {
-            this.priceChanged = document.querySelector('#changePrice').value
-            this.filters[4] = this.priceChanged
-            this.filters2.price_with_discount=this.priceChanged
+            this.priceChanged = document.querySelector('#changePrice').value            
+            this.filters.price_with_discount=this.priceChanged
             this.changeFilters()
         },
         changeCity: function () {
-            this.city = document.querySelector('#city').value
-            this.filters[0] = this.city
-            this.filters2.city=this.city
+            this.city = document.querySelector('#city').value            
+            this.filters.city=this.city
             this.changeFilters()
         },
         changeCourse: function () {
-            this.course = document.querySelector('#course').value
-            this.filters[1] = this.course
-            this.filters2.name=this.course
+            this.course = document.querySelector('#course').value            
+            this.filters.name=this.course
             this.changeFilters()
         },
         changeKind: function (kindSelected) {
             if (kindSelected == "presencial") {
                 this.presencial = !this.presencial
-                if (this.presencial == true) {
-                    this.filters[2] = "Presencial"
-                    this.filters2.kind={Presencial:true}
-                    this.changeFilters()
-                } else {
-                    this.filters[2] = ""
-                    this.changeFilters()
-                }
             }
             if (kindSelected == "ead") {
                 this.ead = !this.ead
-                if (this.ead == true) {
-                    this.filters[3] = "EaD"
-                    this.filters2.kind={EaD:true}
-                    this.changeFilters()
-                } else {
-                    this.filters[3] = ""
-                    this.changeFilters()
-                }
             }
+            this.filters.kind={Presencial:this.presencial,EaD:this.ead}
+            this.changeFilters()           
         },
         changeFilters: function () { 
-            if(this.dbFilter=='' || Object.values(this.filters2).every(value=>value=='')){
+            if(this.dbFilter=='' || Object.values(this.filters).every(value=>value=='')){
                 this.dbFilter=this.db 
             }              
             const campus=['city']
             const course=['name','kind']
             const offer=['price_with_discount']              
-            Object.keys(this.filters2).forEach((filter,index)=>{
-                if(Object.values(this.filters2)[index]!=''){
+            Object.keys(this.filters).forEach((filter,index)=>{
+                if(Object.values(this.filters)[index]!=''){
                     if(campus.indexOf(filter)!=-1){                    
                         this.filterCampus(filter)                    
                     }
@@ -196,65 +176,46 @@ export default {
                     }
                 }
             })
-
-           /* this.dbFilter = this.db
-            if (this.dbFilter.filter(offer => offer.campus.city === this.city).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.campus.city === this.city)
-            }
-            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)
-            }
-            if (this.presencial !== this.ead) {
-                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[2]).length !== 0) {
-                    this.countFilters++
-                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")
-                }
-                if (this.dbFilter.filter(offer => offer.course.kind === this.filters[3]).length !== 0) {
-                    this.countFilters++
-                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "EaD")
-                }
-            } else if (this.presencial == this.ead == true) {
-                this.countFilters += 2
-            }
-            if (this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.price_with_discount <= this.priceChanged)
-            }
-            for (let i = 0; i < this.filters.length; i++) {
-                if (this.filters[i] !== "") { this.filter++ }
-            }
-            if (this.filter > this.countFilters) {
-                this.dbFilter = []
-            }
-            this.countFilters = 0
-            this.filter = 0*/
         },
         filterCampus:function(filter){
-            if (this.dbFilter.filter(offer => offer.campus[filter] === this.city).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.campus[filter] === this.city)
+            if (this.dbFilter.filter(offer => offer.campus[filter] === this.city).length !== 0) {                
+                this.dbFilter = this.dbFilter.filter(offer => offer.campus[filter] === this.city)                
             }else{
                 this.clearFilter()                
             }
         },
         filterCourse:function(filter){
-            if (this.dbFilter.filter(offer => offer.course[filter] === this.course).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer.course[filter] === this.course)
+            if(filter=='name') this.filterNameCourse()
+            if(filter=='kind') this.filterKind()
+        },
+        filterNameCourse:function(){
+            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {                
+                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)                
             }else{
                 this.clearFilter()
             }
+        },
+        filterKind(){    
+            if(this.presencial==this.ead){
+                this.dbFilter=this.db
+                delete this.filters.kind                
+                this.changeFilters()
+            }else{
+                if(this.presencial && (this.dbFilter.filter(offer => offer.course.kind === "Presencial").length !== 0)){                                  
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")                   
+                }
+                if(this.ead && (this.dbFilter.filter(offer => offer.course.kind === "EaD").length !== 0)){                                   
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "EaD")
+                }   
+            }                     
         },
         filterOffer:function(filter){
-            if (this.dbFilter.filter(offer => offer[filter] <= this.priceChanged).length !== 0) {
-                this.countFilters++
-                this.dbFilter = this.dbFilter.filter(offer => offer[filter] <= this.priceChanged)
+            if (this.dbFilter.filter(offer => offer[filter] <= this.priceChanged).length !== 0) {               
+                this.dbFilter = this.dbFilter.filter(offer => offer[filter] <= this.priceChanged)                
             }else{
                 this.clearFilter()
             }
-        },
+        },        
         clearFilter:function(){
             this.dbFilter=''
         },
