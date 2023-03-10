@@ -46,11 +46,11 @@ export default {
         return {
             modal: "",
             mask: "",
-            offers: []
+            offers: []            
         }
     },
     methods: {
-        showModal: function () {
+        showModal: function () {            
             this.modal = document.querySelector('.modal')
             this.modal.style.display = "block"
             this.mask = document.querySelector('.mask')
@@ -59,10 +59,10 @@ export default {
         addOffers: function (offersModal) {            
             for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
-            }
+            }                       
         },
-        deleteOffers:function(index){               
-            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()
+        deleteOffers:function(index){                          
+            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()                                                          
         }
     },
     components: {

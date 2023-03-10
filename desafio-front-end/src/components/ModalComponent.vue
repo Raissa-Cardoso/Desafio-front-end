@@ -83,7 +83,7 @@
 import db from '../data/db.json'
 export default {
     name: 'ModalComponent',
-    emits: ["add"],
+    emits: ["add"],        
     data() {
         return {
             db: db,
@@ -101,7 +101,7 @@ export default {
             ead: false,
             order: false,
             isActive: false,
-            indexSelected: []
+            indexSelected: []            
         }
     },
     mounted() {
@@ -119,8 +119,8 @@ export default {
         this.dbCity= this.dbCity.sort()
         this.dbCourse = this.dbCourse.sort()
         this.dbUniversity = this.dbUniversity.sort()
-        this.dbFilter = this.db
-    },
+        this.dbFilter = this.db                     
+    },    
     methods: {
         closeModal: function () {
             this.modal = document.querySelector('.modal')
@@ -248,7 +248,7 @@ export default {
                 this.offerSelected.push([index, offer])
             }
         },
-        addOffer: function () {
+        addOffer: function () {           
             let count = 0
             let repeat = []
             for (let i = 0; i < this.offerSelected.length; i++) {
@@ -262,8 +262,13 @@ export default {
                     this.offerSelected.splice(this.offerSelected[0].indexOf(repeat[i]), 1)
                 }
             }
-            this.$emit('add', this.offerSelected)
-            this.closeModal()
+            this.$emit('add', this.offerSelected)   
+            this.closeModal() 
+            this.clearModal()          
+        },
+        clearModal:function(){
+            this.indexSelected=[] 
+            this.offerSelected=[]                        
         }
     }
 }
