@@ -31,7 +31,7 @@
             </div>
             <div class="offerSelected">
                 <div v-for="(offer, index) in offers" :key="index">
-                    <CardComponent :offerSend="offer" />
+                    <CardComponent :offerSend="offer" v-on:delete="deleteOffers(index)"/>
                 </div>
             </div>
         </div>
@@ -56,10 +56,13 @@ export default {
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "block"
         },
-        addOffers: function (offersModal) {
+        addOffers: function (offersModal) {            
             for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
             }
+        },
+        deleteOffers:function(index){               
+            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()
         }
     },
     components: {

@@ -23,7 +23,7 @@
             <p id="month">/mês</p>
         </div>
         <div class="buttonsCard">
-            <button id="buttonDelete" v-on:click="deleteOffer">Excluir</button>
+            <button id="buttonDelete" v-on:click="deleteOffer(this.offerSend)">Excluir</button>
             <button id="buttonViewOffer" v-if="this.offerSend.enabled == true" class="buttonActived">Ver oferta</button>
             <button id="buttonUnavailable" class="buttonDesactived" v-else>Indisponível</button>
         </div>
@@ -35,12 +35,13 @@
 
 export default {
     name: 'CardComponent',
+    emits: ["delete"],
     props: {
         offerSend: {}
     },
     methods: {
-        deleteOffer: function () {
-            document.querySelector('.mainCard').remove()
+        deleteOffer: function (offer) {            
+            this.$emit('delete', offer)              
         }
     }
 }
