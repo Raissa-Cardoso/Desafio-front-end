@@ -166,7 +166,7 @@ h2,
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    margin: 20px 10px;
+    margin: 20px;
     border-radius: 10px;
     height: 160px;
     border: solid 2px var(--color-secondary-blue);
