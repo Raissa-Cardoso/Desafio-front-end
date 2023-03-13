@@ -1,70 +1,83 @@
 :root {
-    --color-background-header:#FFF;
+    --color-background-header: #FFF;
     --color-background-main: #FBFBFB;
-    --color-primary-blue:#18ACC4;
-    --color-secondary-blue:#007A8D;
-    --color-primary-yellow:#FDCB13;
+    --color-primary-blue: #18ACC4;
+    --color-secondary-blue: #007A8D;
+    --color-primary-yellow: #FDCB13;
     --color-secondary-yellow: #DE9E1F;
-    --color-green:#0FA866;
-    --color-font-white:#fff;
-    --color-font-black:#1F2D30;
-    --color-modal-overlay: rgba(31, 45, 48,0.88);
+    --color-green: #0FA866;
+    --color-font-white: #fff;
+    --color-font-black: #1F2D30;
+    --color-modal-overlay: rgba(31, 45, 48, 0.88);
     --font-size-smallest2: 13px;
     --font-size-smallest: 14px;
     --font-size-smaller: 20px;
     --font-size-small: 24px;
     --font-size-medium: 32px;
-    --button-desactived:#CACDCE;
-    --button-font-desactived:#A2A7A8;
-
+    --button-desactived: #CACDCE;
+    --button-font-desactived: #A2A7A8;
 }
-*{
-    padding:0;
-    margin:0;
+
+* {
+    padding: 0;
+    margin: 0;
     box-sizing: border-box;
     font-family: sans-serif;
 }
-html, body{
-    background-color: var(--color-background-home);
+
+html,
+body {
+    background-color: var(--color-background-home);    
 }
-main{
+
+main {
     background-color: var(--color-background-home);
     display: flex;
-    flex-direction: column;
+    flex-direction: column;          
 }
-a{
+
+a {
     text-decoration: none;
     transition: 0.2s opacity;
 }
-a:hover, .router-link-active{
-    opacity:0.4;
+
+a:hover,
+.router-link-active {
+    opacity: 0.4;
 }
-h1{
+
+h1 {
     margin: 20px;
 }
-.card{
+
+.card {
     box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     margin-bottom: 20px;
 }
-.buttonDesactived{
+
+.buttonDesactived {
     background-color: var(--button-desactived);
     border: solid 1px var(--button-desactived);
     color: var(--button-font-desactived);
 }
-.buttonActived{
+
+.buttonActived {
     background-color: var(--color-primary-yellow);
-    border:solid 1px var(--color-secondary-yellow);
+    border: solid 1px var(--color-secondary-yellow);
     color: var(--color-font-black);
-    cursor:pointer;
+    cursor: pointer;
 }
-.buttonSelected{
+
+.buttonSelected {
     color: var(--color-font-white);
     background-color: var(--color-secondary-blue);
 }
-.buttonUnselected{
+
+.buttonUnselected {
     border-bottom: solid 2px var(--color-secondary-blue);
     color: var(--color-secondary-blue);
 }
+
 .dividerModal {
     height: 2px;
     width: 97%;
