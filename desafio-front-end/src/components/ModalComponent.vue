@@ -251,7 +251,7 @@ export default {
                 this.offerSelected.push([index, offer])
             }
         },
-        addOffer: function () {
+        addOffer: function () {           
             let count = 0
             let repeat = []
             for (let i = 0; i < this.offerSelected.length; i++) {
@@ -270,6 +270,10 @@ export default {
             this.clearModal()
         },
         clearModal: function () {
+            document.querySelectorAll('.checkOffer').forEach(checkbox=>{
+                checkbox.checked=false
+            })
+            
             this.indexSelected = []
             this.offerSelected = []
         }
