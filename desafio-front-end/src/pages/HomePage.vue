@@ -114,11 +114,13 @@ export default {
 .modal {
     display: none;
     z-index: 100;
-    width: 80vw;
+    width: 100vw;
     height: 100vh;
     border: solid 1px black;
     position: absolute;
     align-self: center;
+    box-sizing: border-box;
+   
 
 }
 
@@ -169,6 +171,7 @@ h2,
     justify-content: center;
     margin: 20px;
     border-radius: 10px;
+    height: 160px;
     border: solid 2px var(--color-secondary-blue);
 }
 
@@ -176,7 +179,7 @@ h2,
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-smallest);
+    font-size: var(--font-size-smaller);
     font-weight: bold;
     height: 100%;
     width: 100%;
@@ -185,14 +188,14 @@ h2,
 }
 
 .semester :nth-child(1){
-    border-bottom-left-radius: 9px;
-    border-top-left-radius: 9px;
+    
+    border-top-left-radius: 10px;
     border-right: solid 1px var(--color-secondary-blue);
 }
 
 .semester :nth-child(3){
-    border-bottom-right-radius: 9px;
-    border-top-right-radius: 9px;
+    border-bottom-right-radius: 10px;
+    border-top-right-radius: 10px;
 }
 
 .cards {
@@ -267,7 +270,7 @@ h2,
 
     .modal {
         width: 50vw;
-        height: 80vh;
+        height: 80vh;        
     }
 
     .path {
@@ -311,11 +314,24 @@ h2,
         font-size: var(--font-size-smallest);
         border-radius: 5px;
     }
-
+    .semester :nth-child(1){
+        border-top-left-radius: 8px;
+        border-bottom-left-radius: 8px;  
+    }
     .semester :nth-child(2) {
         border-right: solid 1px var(--color-secondary-blue);
         border-radius: 0;
     }
+
+    .semester :nth-child(3){
+        border-top-right-radius: 8px;
+        border-bottom-right-radius: 8px; 
+    }
+    
+    .semester button {    
+        font-size: var(--font-size-smallest);
+    }
+
 
     .card {
         width: 280px;
