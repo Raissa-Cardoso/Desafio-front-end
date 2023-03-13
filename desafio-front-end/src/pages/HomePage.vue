@@ -19,9 +19,9 @@
         <h2>Adicione bolsas de cursos e faculdades do seu interesse e receba atualizações com as
             melhores ofertas disponíveis.</h2>
         <div class="semester ">
-            <div>Todos os semestres</div>
-            <div>2º semestre de 2019</div>
-            <div>1º semestre de 2020</div>
+            <button id="allSemesters" class="buttonSelected" v-on:click="buttonChecked('allSemesters')">Todos os semestres</button>
+            <button id="2019.2" class="buttonUnselected" v-on:click="buttonChecked('2019.2')">2º semestre de 2019</button>
+            <button id="2020.1" class="buttonUnselected" v-on:click="buttonChecked('2020.1')">1º semestre de 2020</button>
         </div>
         <div class="cards">
             <div class="card">
@@ -46,23 +46,44 @@ export default {
         return {
             modal: "",
             mask: "",
-            offers: []            
+            offers: [],
+            offersFilter:[]
         }
     },
     methods: {
-        showModal: function () {            
+        showModal: function () {
             this.modal = document.querySelector('.modal')
             this.modal.style.display = "block"
             this.mask = document.querySelector('.mask')
             this.mask.style.display = "block"
         },
-        addOffers: function (offersModal) {            
+        addOffers: function (offersModal) {
             for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
-            }                       
+            }
         },
-        deleteOffers:function(index){                          
-            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()                                                          
+        deleteOffers:function(index){
+            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()
+        },
+        buttonChecked:function(id){
+            document.querySelectorAll('.semester button').forEach(element=>{
+                if(element.classList=='buttonSelected'){
+                    element.classList.remove('buttonSelected')
+                    element.classList.add('buttonUnselected')
+                }
+            })
+            document.getElementById(id).classList.remove('buttonUnselected')
+            document.getElementById(id).classList.add('buttonSelected')
+            if(id!=='allSemesters'){
+                this.offers.forEach(offer=>{
+                if(offer.enrollment_semester==id){
+                    this.offersFilter=offer
+                }
+                this.offers=this.offersFilter
+            })
+            }
+            console.log(this.offersFilter)
+
         }
     },
     components: {
@@ -150,28 +171,27 @@ h2,
     border: solid 2px var(--color-secondary-blue);
 }
 
-.semester div {
+.semester button {
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-smallest);
     font-weight: bold;
-    height: 60px;
+    height: 100%;
     width: 100%;
+    border: none;
+    cursor: pointer;
 }
 
-.semester :nth-child(1) {
-    color: var(--color-font-white);
-    background-color: var(--color-secondary-blue);
+.semester :nth-child(1){
+    border-bottom-left-radius: 9px;
+    border-top-left-radius: 9px;
+    border-right: solid 1px var(--color-secondary-blue);
 }
 
-.semester :nth-child(2) {
-    border-bottom: solid 2px var(--color-secondary-blue);
-}
-
-.semester :nth-child(2),
-.semester :nth-child(3) {
-    color: var(--color-secondary-blue);
+.semester :nth-child(3){
+    border-bottom-right-radius: 9px;
+    border-top-right-radius: 9px;
 }
 
 .cards {
