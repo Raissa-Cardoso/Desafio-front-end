@@ -56,6 +56,14 @@ h1{
     color: var(--color-font-black);
     cursor:pointer;
 }
+.buttonSelected{
+    color: var(--color-font-white);
+    background-color: var(--color-secondary-blue);
+}
+.buttonUnselected{
+    border-bottom: solid 2px var(--color-secondary-blue);
+    color: var(--color-secondary-blue);
+}
 .dividerModal {
     height: 2px;
     width: 97%;
