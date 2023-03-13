@@ -67,7 +67,8 @@ header p {
     font-size: var(--font-size-small);
 }
 
-.login :nth-child(2), #infoHelp{
+.login :nth-child(2),
+#infoHelp {
     display: block;
 }
 

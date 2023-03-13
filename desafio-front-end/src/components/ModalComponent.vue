@@ -47,8 +47,11 @@
             </div>
             <div class='order'>
                 <p>Ordenar por </p>
-                <button v-on:click="universitiesOrder()">Nome da faculdade</button>
-                <img src='../assets/icons/dropUniversities.png' alt="dropUniversitiesicon" />
+                <div>
+                    <button v-on:click="universitiesOrder()">Nome da faculdade</button>
+                    <img src='../assets/icons/dropUniversities.png' alt="dropUniversitiesicon" />
+                </div>
+
             </div>
         </div>
         <div class="dividerModal"></div>
@@ -83,16 +86,16 @@
 import db from '../data/db.json'
 export default {
     name: 'ModalComponent',
-    emits: ["add"],        
+    emits: ["add"],
     data() {
         return {
             db: db,
             dbFilter: [],
-            dbFilterOrder: [],            
-            filters:{},
-            dbUniversity: [],            
-            dbCity: [],            
-            dbCourse: [],            
+            dbFilterOrder: [],
+            filters: {},
+            dbUniversity: [],
+            dbCity: [],
+            dbCourse: [],
             offerSelected: [],
             priceChanged: 0,
             city: "",
@@ -101,7 +104,7 @@ export default {
             ead: false,
             order: false,
             isActive: false,
-            indexSelected: []            
+            indexSelected: []
         }
     },
     mounted() {
@@ -115,12 +118,12 @@ export default {
             if (this.dbUniversity.indexOf(this.db[i].university.name) == -1) {
                 this.dbUniversity.push(db[i].university.name)
             }
-        }        
-        this.dbCity= this.dbCity.sort()
+        }
+        this.dbCity = this.dbCity.sort()
         this.dbCourse = this.dbCourse.sort()
         this.dbUniversity = this.dbUniversity.sort()
-        this.dbFilter = this.db                     
-    },    
+        this.dbFilter = this.db
+    },
     methods: {
         closeModal: function () {
             this.modal = document.querySelector('.modal')
@@ -132,18 +135,18 @@ export default {
             }
         },
         changePrice: function () {
-            this.priceChanged = document.querySelector('#changePrice').value            
-            this.filters.price_with_discount=this.priceChanged
+            this.priceChanged = document.querySelector('#changePrice').value
+            this.filters.price_with_discount = this.priceChanged
             this.changeFilters()
         },
         changeCity: function () {
-            this.city = document.querySelector('#city').value            
-            this.filters.city=this.city
+            this.city = document.querySelector('#city').value
+            this.filters.city = this.city
             this.changeFilters()
         },
         changeCourse: function () {
-            this.course = document.querySelector('#course').value            
-            this.filters.name=this.course
+            this.course = document.querySelector('#course').value
+            this.filters.name = this.course
             this.changeFilters()
         },
         changeKind: function (kindSelected) {
@@ -153,71 +156,71 @@ export default {
             if (kindSelected == "ead") {
                 this.ead = !this.ead
             }
-            this.filters.kind={Presencial:this.presencial,EaD:this.ead}
-            this.changeFilters()           
+            this.filters.kind = { Presencial: this.presencial, EaD: this.ead }
+            this.changeFilters()
         },
-        changeFilters: function () { 
-            if(this.dbFilter=='' || Object.values(this.filters).every(value=>value=='')){
-                this.dbFilter=this.db 
-            }              
-            const campus=['city']
-            const course=['name','kind']
-            const offer=['price_with_discount']              
-            Object.keys(this.filters).forEach((filter,index)=>{
-                if(Object.values(this.filters)[index]!=''){
-                    if(campus.indexOf(filter)!=-1){                    
-                        this.filterCampus(filter)                    
+        changeFilters: function () {
+            if (this.dbFilter == '' || Object.values(this.filters).every(value => value == '')) {
+                this.dbFilter = this.db
+            }
+            const campus = ['city']
+            const course = ['name', 'kind']
+            const offer = ['price_with_discount']
+            Object.keys(this.filters).forEach((filter, index) => {
+                if (Object.values(this.filters)[index] != '') {
+                    if (campus.indexOf(filter) != -1) {
+                        this.filterCampus(filter)
                     }
-                    if(course.indexOf(filter)!=-1){
+                    if (course.indexOf(filter) != -1) {
                         this.filterCourse(filter)
                     }
-                    if(offer.indexOf(filter)!=-1){
+                    if (offer.indexOf(filter) != -1) {
                         this.filterOffer(filter)
                     }
                 }
             })
         },
-        filterCampus:function(filter){
-            if (this.dbFilter.filter(offer => offer.campus[filter] === this.city).length !== 0) {                
-                this.dbFilter = this.dbFilter.filter(offer => offer.campus[filter] === this.city)                
-            }else{
-                this.clearFilter()                
-            }
-        },
-        filterCourse:function(filter){
-            if(filter=='name') this.filterNameCourse()
-            if(filter=='kind') this.filterKind()
-        },
-        filterNameCourse:function(){
-            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {                
-                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)                
-            }else{
+        filterCampus: function (filter) {
+            if (this.dbFilter.filter(offer => offer.campus[filter] === this.city).length !== 0) {
+                this.dbFilter = this.dbFilter.filter(offer => offer.campus[filter] === this.city)
+            } else {
                 this.clearFilter()
             }
         },
-        filterKind(){    
-            if(this.presencial==this.ead){
-                this.dbFilter=this.db
-                delete this.filters.kind                
+        filterCourse: function (filter) {
+            if (filter == 'name') this.filterNameCourse()
+            if (filter == 'kind') this.filterKind()
+        },
+        filterNameCourse: function () {
+            if (this.dbFilter.filter(offer => offer.course.name === this.course).length !== 0) {
+                this.dbFilter = this.dbFilter.filter(offer => offer.course.name === this.course)
+            } else {
+                this.clearFilter()
+            }
+        },
+        filterKind() {
+            if (this.presencial == this.ead) {
+                this.dbFilter = this.db
+                delete this.filters.kind
                 this.changeFilters()
-            }else{
-                if(this.presencial && (this.dbFilter.filter(offer => offer.course.kind === "Presencial").length !== 0)){                                  
-                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")                   
+            } else {
+                if (this.presencial && (this.dbFilter.filter(offer => offer.course.kind === "Presencial").length !== 0)) {
+                    this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "Presencial")
                 }
-                if(this.ead && (this.dbFilter.filter(offer => offer.course.kind === "EaD").length !== 0)){                                   
+                if (this.ead && (this.dbFilter.filter(offer => offer.course.kind === "EaD").length !== 0)) {
                     this.dbFilter = this.dbFilter.filter(offer => offer.course.kind === "EaD")
-                }   
-            }                     
+                }
+            }
         },
-        filterOffer:function(filter){
-            if (this.dbFilter.filter(offer => offer[filter] <= this.priceChanged).length !== 0) {               
-                this.dbFilter = this.dbFilter.filter(offer => offer[filter] <= this.priceChanged)                
-            }else{
+        filterOffer: function (filter) {
+            if (this.dbFilter.filter(offer => offer[filter] <= this.priceChanged).length !== 0) {
+                this.dbFilter = this.dbFilter.filter(offer => offer[filter] <= this.priceChanged)
+            } else {
                 this.clearFilter()
             }
-        },        
-        clearFilter:function(){
-            this.dbFilter=''
+        },
+        clearFilter: function () {
+            this.dbFilter = ''
         },
         universitiesOrder: function () {
             this.order = !this.order
@@ -262,13 +265,17 @@ export default {
                     this.offerSelected.splice(this.offerSelected[0].indexOf(repeat[i]), 1)
                 }
             }
-            this.$emit('add', this.offerSelected)   
-            this.closeModal() 
-            this.clearModal()          
+            this.$emit('add', this.offerSelected)
+            this.closeModal()
+            this.clearModal()
         },
-        clearModal:function(){
-            this.indexSelected=[] 
-            this.offerSelected=[]                        
+        clearModal: function () {
+            document.querySelectorAll('.checkOffer').forEach(checkbox=>{
+                checkbox.checked=false
+            })
+            
+            this.indexSelected = []
+            this.offerSelected = []
         }
     }
 }
@@ -276,17 +283,17 @@ export default {
 
 <style scoped>
 .mainModal {
-    background-color: var(--color-background-main);    
+    background-color: var(--color-background-main);
     width: 100vw;
-    height: 150%;    
-    padding: 40px 15vw;    
+    height: 150%;
+    padding: 40px 15vw;
     line-height: 30px;
     box-sizing: border-box;
 }
 
 #title,
 #subtitle {
-    color: var(--color-font-black);    
+    color: var(--color-font-black);
 }
 
 #title {
@@ -297,14 +304,14 @@ export default {
 #subtitle,
 .scholarshipModal {
     font-size: var(--font-size-small);
-    margin-right: 40px;    
+    margin-right: 40px;
 }
 
 .scholarshipModal {
-    margin-left: 60%;   
+    margin-left: 60%;
     display: flex;
     flex-direction: column;
-    
+
 }
 
 .scholarshipModal :nth-child(2),
@@ -314,20 +321,21 @@ export default {
     font-size: 16px;
 }
 
-.kindPrice{
+.kindPrice {
     display: flex;
     flex-direction: column;
 }
+
 .results {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;      
-    font-size: var(--font-size-smaller);    
+    justify-content: space-between;
+    font-size: var(--font-size-smaller);
 }
 
 .kindModal,
-.priceModal {    
-    height: 100px;    
+.priceModal {
+    height: 100px;
     display: flex;
     flex-direction: column;
     justify-content: space-around;
@@ -336,15 +344,15 @@ export default {
 }
 
 .priceBar input {
-    width: 100%; 
+    width: 100%;
 
 }
 
 .kindModal p,
 .priceModal :nth-child(1),
-.results p {    
-    font-weight: bold;    
-    margin-right: 4vw;          
+.results p {
+    font-weight: bold;
+    margin-right: 4vw;
 }
 
 .kindModalOptions,
@@ -352,11 +360,19 @@ export default {
 .order,
 .scholarshipModalPorcentage {
     display: flex;
-    flex-direction: row;    
+    flex-direction: row;
     align-items: center;
-    font-size: var(--font-size-smaller);    
+    font-size: var(--font-size-smaller);
     flex-wrap: wrap;
 }
+
+.order div {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: center;
+}
+
 .scholarshipModalPorcentage :nth-child(1) {
     margin-right: 5px;
 }
@@ -366,24 +382,27 @@ export default {
     display: flex;
     flex-direction: column;
 }
-.universityModal{      
-    justify-content: space-between;      
+
+.universityModal {
+    justify-content: space-between;
 }
 
-.universityModal img{
+.universityModal img {
     width: 50%;
     height: 55px;
-    display: flex;    
+    display: flex;
     margin-top: 10%;
-    object-fit: contain;     
+    object-fit: contain;
 }
-.universityModal .checkOffer{
+
+.universityModal .checkOffer {
     width: 20px;
     height: 20px;
     margin-top: 10%;
 }
+
 .courseModal {
-    width: 40%;       
+    width: 40%;
 }
 
 .courseModal :nth-child(1) {
@@ -392,14 +411,13 @@ export default {
 }
 
 .courseModal :nth-child(2) {
-    font-size: var(--font-size-smaller);    
+    font-size: var(--font-size-smaller);
 }
 
 .order button {
     color: var(--color-secondary-blue);
     font-weight: bold;
     height: 35px;
-    align-self: center;
     margin-left: 10px;
     background-color: var(--color-background-main);
     border: none;
@@ -407,7 +425,7 @@ export default {
     font-size: var(--font-size-smaller);
 }
 
-.order img {       
+.order img {
     height: 3vh;
     width: 3vw;
 }
@@ -422,8 +440,8 @@ export default {
 
 .cityCourse {
     display: flex;
-    flex-direction: column;  
-    
+    flex-direction: column;
+
 }
 
 .cityCourse select {
@@ -438,14 +456,16 @@ export default {
 .course {
     display: flex;
     flex-direction: column;
-    margin: 0;   
+    margin: 0;
     padding: 10px 0px;
-    
+
 }
-.city label, .course label{
-    font-weight: bold;    
+
+.city label,
+.course label {
+    font-weight: bold;
     font-size: var(--font-size-smaller);
-    
+
 }
 
 
@@ -459,7 +479,7 @@ export default {
     border: none;
     font-size: var(--font-size-medium);
     color: var(--color-font-white);
-    background-color: rgba(31, 45, 48,0);
+    background-color: rgba(31, 45, 48, 0);
     cursor: pointer;
 }
 
@@ -495,34 +515,35 @@ export default {
         height: 90vh;
         width: calc(50vw - 1px);
         padding: 40px;
-        
-    }
-    .closeModal { 
-        top: -30px;  
-        height: 20px;
-        width: 20px;           
-        font-size: var(--font-size-small); 
-        align-self: right; 
-            
+
     }
 
-    
+    .closeModal {
+        top: -30px;
+        height: 20px;
+        width: 20px;
+        font-size: var(--font-size-small);
+        align-self: right;
+
+    }
+
+
     #title {
         font-size: var(--font-size-smaller);
     }
 
     #subtitle,
     .scholarshipModal {
-        font-size: var(--font-size-smallest);        
+        font-size: var(--font-size-smallest);
     }
+
     .scholarshipModal {
-    
-    margin-right: 5px;    
-    margin-left: 4vw;   
-    display: flex;
-    flex-direction: column;
-    
-}
+        width: 20%;
+        margin-right: 5px;
+        margin-left: 4vw;
+        display: flex;
+        flex-direction: column;
+    }
 
     .kindPrice,
     .results {
@@ -534,48 +555,49 @@ export default {
 
     .kindModal,
     .priceModal {
-        width: 20vw;           
+        width: 20vw;
     }
 
     .kindModal p,
     .cityCourse,
-    .priceModal :nth-child(1)
-    
-     {
-        font-size: var(--font-size-smallest2); 
+    .priceModal :nth-child(1) {
+        font-size: var(--font-size-smallest2);
     }
-    .priceModal :nth-child(2)
-    {
-        font-size: var(--font-size-smallest); 
+
+    .priceModal :nth-child(2) {
+        font-size: var(--font-size-smallest);
     }
 
     .kindModalOptions,
     .order,
     .universityModal,
-    .scholarshipModalPorcentage,.results p {
+    .scholarshipModalPorcentage,
+    .results p {
         font-size: var(--font-size-smallest);
     }
-    .universityModal{              
+
+    .universityModal {
         flex-wrap: nowrap;
     }
-   
+
     .universityModal img {
-        width: 30%;
+        width: 25%;
         height: 40px;
         margin-top: 0;
-        object-fit: contain;             
+        object-fit: contain;
     }
-    .universityModal .checkOffer{
+
+    .universityModal .checkOffer {
         width: 15px;
         height: 15px;
         margin-top: 0;
     }
-    .courseModal{
-        width: 30%;        
+
+    .courseModal {
+        width: 30%;
     }
 
     .courseModal :nth-child(2) {
-               
         font-size: var(--font-size-smallest);
     }
 
@@ -584,20 +606,22 @@ export default {
         margin-bottom: 3px;
         font-size: var(--font-size-smallest);
     }
-    .order img {           
-        height: 2vh;
-        width: 1.5vw;
+
+    .order img {
+        height: 2.2vh;
+        width: 1.6vw;
+        margin-bottom: 1.2%;
     }
 
     .cityCourse {
-        justify-content: space-between;        
+        justify-content: space-between;
         flex-direction: row;
-        font-size: var(--font-size-smaller);       
+        font-size: var(--font-size-smaller);
     }
 
     .cityCourse select {
         width: 20vw;
-        height: 30px;        
+        height: 30px;
         border-radius: 5px;
         font-size: var(--font-size-smallest);
 
@@ -605,9 +629,11 @@ export default {
 
     .city,
     .course {
-        width: 20vw;         
+        width: 20vw;
     }
-    .city label, .course label{        
+
+    .city label,
+    .course label {
         font-size: var(--font-size-smallest2);
     }
 }

@@ -3,9 +3,7 @@
         <div class="modal">
             <ModalComponent v-on:add="addOffers" />
         </div>
-        <div class="mask">
-
-        </div>
+        <div class="mask"></div>
         <div class="return">
             <img src='../assets/icons/return.png' alt="return icon" />
             <p>Minha conta</p>
@@ -19,7 +17,8 @@
         <h2>Adicione bolsas de cursos e faculdades do seu interesse e receba atualizações com as
             melhores ofertas disponíveis.</h2>
         <div class="semester ">
-            <button id="allSemesters" class="buttonSelected" v-on:click="buttonChecked('allSemesters')">Todos os semestres</button>
+            <button id="allSemesters" class="buttonSelected" v-on:click="buttonChecked('allSemesters')">Todos os
+                semestres</button>
             <button id="2019.2" class="buttonUnselected" v-on:click="buttonChecked('2019.2')">2º semestre de 2019</button>
             <button id="2020.1" class="buttonUnselected" v-on:click="buttonChecked('2020.1')">1º semestre de 2020</button>
         </div>
@@ -31,7 +30,7 @@
             </div>
             <div class="offerSelected">
                 <div v-for="(offer, index) in offersFilter" :key="index">
-                    <CardComponent :offerSend="offer" v-on:delete="deleteOffers(index)"/>
+                    <CardComponent :offerSend="offer" v-on:delete="deleteOffers(index)" />
                 </div>
             </div>
         </div>
@@ -47,7 +46,7 @@ export default {
             modal: "",
             mask: "",
             offers: [],
-            offersFilter:[]
+            offersFilter: []
         }
     },
     methods: {
@@ -60,31 +59,31 @@ export default {
         addOffers: function (offersModal) {
             for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
-            }     
-            this.offersFilter=this.offers       
+            }
+            this.offersFilter = this.offers
         },
-        deleteOffers:function(index){
-            document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()
+        deleteOffers: function (index) {
+            document.querySelectorAll('.mainCard').length != 1 ? document.querySelectorAll('.mainCard').item(index).remove() : document.querySelector('.mainCard').remove()
         },
-        buttonChecked:function(id){
-            document.querySelectorAll('.semester button').forEach(element=>{
-                if(element.classList=='buttonSelected'){
+        buttonChecked: function (id) {
+            document.querySelectorAll('.semester button').forEach(element => {
+                if (element.classList == 'buttonSelected') {
                     element.classList.remove('buttonSelected')
                     element.classList.add('buttonUnselected')
                 }
             })
             document.getElementById(id).classList.remove('buttonUnselected')
             document.getElementById(id).classList.add('buttonSelected')
-            if(id!=='allSemesters'){
-                this.offersFilter=[]
-                this.offers.forEach(offer=>{
-                if(offer.enrollment_semester==id){
-                    this.offersFilter.push(offer)
-                }                
-            })
-            }else{
-                this.offersFilter=this.offers
-            }           
+            if (id !== 'allSemesters') {
+                this.offersFilter = []
+                this.offers.forEach(offer => {
+                    if (offer.enrollment_semester == id) {
+                        this.offersFilter.push(offer)
+                    }
+                })
+            } else {
+                this.offersFilter = this.offers
+            }
         }
     },
     components: {
@@ -120,8 +119,6 @@ export default {
     position: absolute;
     align-self: center;
     box-sizing: border-box;
-   
-
 }
 
 .offerSelected {
@@ -187,13 +184,12 @@ h2,
     cursor: pointer;
 }
 
-.semester :nth-child(1){
-    
+.semester :nth-child(1) {
     border-top-left-radius: 10px;
     border-right: solid 1px var(--color-secondary-blue);
 }
 
-.semester :nth-child(3){
+.semester :nth-child(3) {
     border-bottom-right-radius: 10px;
     border-top-right-radius: 10px;
 }
@@ -218,6 +214,7 @@ h2,
     padding: 40px;
     border-radius: 10px;
     background-color: #fff;
+
 }
 
 .card img {
@@ -233,6 +230,7 @@ h2,
 
 .card :nth-child(3) {
     font-size: var(--font-size-small);
+    text-align: center;
 }
 
 @media (min-width:1178px) {
@@ -244,7 +242,6 @@ h2,
     .cards,
     .offerSelected {
         flex-direction: row;
-
     }
 
     .offerSelected {
@@ -256,7 +253,6 @@ h2,
         width: 95%;
         margin-bottom: 20px;
         margin-left: 20px;
-
     }
 
     .card {
@@ -270,7 +266,7 @@ h2,
 
     .modal {
         width: 50vw;
-        height: 80vh;        
+        height: 80vh;
     }
 
     .path {
@@ -314,24 +310,25 @@ h2,
         font-size: var(--font-size-smallest);
         border-radius: 5px;
     }
-    .semester :nth-child(1){
+
+    .semester :nth-child(1) {
         border-top-left-radius: 8px;
-        border-bottom-left-radius: 8px;  
+        border-bottom-left-radius: 8px;
     }
+
     .semester :nth-child(2) {
         border-right: solid 1px var(--color-secondary-blue);
         border-radius: 0;
     }
 
-    .semester :nth-child(3){
+    .semester :nth-child(3) {
         border-top-right-radius: 8px;
-        border-bottom-right-radius: 8px; 
-    }
-    
-    .semester button {    
-        font-size: var(--font-size-smallest);
+        border-bottom-right-radius: 8px;
     }
 
+    .semester button {
+        font-size: var(--font-size-smallest);
+    }
 
     .card {
         width: 280px;
