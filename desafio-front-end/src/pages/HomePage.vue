@@ -30,7 +30,7 @@
                 <p>Clique para adicionar bolsas de cursos do seu interesse</p>
             </div>
             <div class="offerSelected">
-                <div v-for="(offer, index) in offers" :key="index">
+                <div v-for="(offer, index) in offersFilter" :key="index">
                     <CardComponent :offerSend="offer" v-on:delete="deleteOffers(index)"/>
                 </div>
             </div>
@@ -60,7 +60,8 @@ export default {
         addOffers: function (offersModal) {
             for (let i = 0; i < offersModal.length; i++) {
                 this.offers.push(offersModal[i][1])
-            }
+            }     
+            this.offersFilter=this.offers       
         },
         deleteOffers:function(index){
             document.querySelectorAll('.mainCard').length!=1?document.querySelectorAll('.mainCard').item(index).remove():document.querySelector('.mainCard').remove()
@@ -75,15 +76,15 @@ export default {
             document.getElementById(id).classList.remove('buttonUnselected')
             document.getElementById(id).classList.add('buttonSelected')
             if(id!=='allSemesters'){
+                this.offersFilter=[]
                 this.offers.forEach(offer=>{
                 if(offer.enrollment_semester==id){
-                    this.offersFilter=offer
-                }
-                this.offers=this.offersFilter
+                    this.offersFilter.push(offer)
+                }                
             })
-            }
-            console.log(this.offersFilter)
-
+            }else{
+                this.offersFilter=this.offers
+            }           
         }
     },
     components: {
