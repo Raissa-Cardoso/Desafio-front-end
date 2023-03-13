@@ -67,11 +67,15 @@ header p {
     font-size: var(--font-size-small);
 }
 
+.login :nth-child(2), #infoHelp{
+    display: block;
+}
+
 #infoHowWorks,
 .infoTel,
 header :nth-child(2),
 .login :nth-child(1),
-.navHeader :nth-child(2),
+.navHeader p:nth-child(2),
 .navHeader :nth-child(3) {
     display: none;
 }

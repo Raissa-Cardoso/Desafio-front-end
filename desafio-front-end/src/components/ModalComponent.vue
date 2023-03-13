@@ -276,31 +276,35 @@ export default {
 
 <style scoped>
 .mainModal {
-    background-color: var(--color-background-main);
-    height: 100vh;
-    padding: 20px;
+    background-color: var(--color-background-main);    
+    width: 100vw;
+    height: 150%;    
+    padding: 40px 15vw;    
     line-height: 30px;
+    box-sizing: border-box;
 }
 
 #title,
 #subtitle {
-    color: var(--color-font-black);
-    width: 40vw;
+    color: var(--color-font-black);    
 }
 
 #title {
-    font-size: var(--font-size-small);
+    font-size: var(--font-size-medium);
     font-weight: bold;
 }
 
 #subtitle,
 .scholarshipModal {
-    font-size: var(--font-size-smaller);
-    margin-right: 40px;
+    font-size: var(--font-size-small);
+    margin-right: 40px;    
 }
 
 .scholarshipModal {
-    width: 20%;
+    margin-left: 60%;   
+    display: flex;
+    flex-direction: column;
+    
 }
 
 .scholarshipModal :nth-child(2),
@@ -310,59 +314,76 @@ export default {
     font-size: 16px;
 }
 
-.kindPrice,
+.kindPrice{
+    display: flex;
+    flex-direction: column;
+}
 .results {
     display: flex;
     flex-direction: row;
-    justify-content: space-between;
-    margin-right: 40px;
+    justify-content: space-between;      
+    font-size: var(--font-size-smaller);    
 }
 
 .kindModal,
-.priceModal {
-    width: 45%;
-    height: 120px;
+.priceModal {    
+    height: 100px;    
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+    font-size: var(--font-size-smaller);
+
 }
 
 .priceBar input {
-    width: 100%;
+    width: 100%; 
+
 }
 
 .kindModal p,
-.cityCourse,
 .priceModal :nth-child(1),
-.results p {
-    font-size: 1.3vw;
-    font-weight: bold;
-    margin-top: 10px;
+.results p {    
+    font-weight: bold;    
+    margin-right: 4vw;          
 }
 
 .kindModalOptions,
-.order,
 .universityModal,
+.order,
 .scholarshipModalPorcentage {
     display: flex;
-    flex-direction: row;
+    flex-direction: row;    
     align-items: center;
-    font-size: 18px;
+    font-size: var(--font-size-smaller);    
+    flex-wrap: wrap;
 }
-
 .scholarshipModalPorcentage :nth-child(1) {
     margin-right: 5px;
 }
 
 .universitiesModal {
     overflow-x: scroll;
+    display: flex;
+    flex-direction: column;
+}
+.universityModal{      
+    justify-content: space-between;      
 }
 
-.universityModal img {
-    width: 30%;
-    height: 35px;
-    object-fit: contain;
-}
-
-.courseModal {
+.universityModal img{
     width: 50%;
+    height: 55px;
+    display: flex;    
+    margin-top: 10%;
+    object-fit: contain;     
+}
+.universityModal .checkOffer{
+    width: 20px;
+    height: 20px;
+    margin-top: 10%;
+}
+.courseModal {
+    width: 40%;       
 }
 
 .courseModal :nth-child(1) {
@@ -371,24 +392,24 @@ export default {
 }
 
 .courseModal :nth-child(2) {
-    font-size: var(--font-size-smaller);
+    font-size: var(--font-size-smaller);    
 }
-
 
 .order button {
     color: var(--color-secondary-blue);
     font-weight: bold;
-    height: 25px;
+    height: 35px;
     align-self: center;
     margin-left: 10px;
     background-color: var(--color-background-main);
     border: none;
     cursor: pointer;
+    font-size: var(--font-size-smaller);
 }
 
 .order img {       
-    height: 2vh;
-    width: 1.5vw;
+    height: 3vh;
+    width: 3vw;
 }
 
 .kindModalOptions input {
@@ -401,33 +422,45 @@ export default {
 
 .cityCourse {
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    flex-direction: column;  
+    
 }
 
 .cityCourse select {
-    width: 34vw;
-    height: 30px;
+    width: 100%;
+    height: 50px;
     margin-right: 6vw;
+    border-radius: 10px;
+    font-size: var(--font-size-smaller);
 }
 
 .city,
 .course {
     display: flex;
     flex-direction: column;
+    margin: 0;   
+    padding: 10px 0px;
+    
+}
+.city label, .course label{
+    font-weight: bold;    
+    font-size: var(--font-size-smaller);
+    
 }
 
-.universitiesModal {
-    display: flex;
-    flex-direction: column;
-}
+
 
 .closeModal {
-    top: -30px;
+    top: -50px;
     right: 0;
     position: absolute;
-    height: 30px;
-    width: 30px;
+    height: 50px;
+    width: 50px;
+    border: none;
+    font-size: var(--font-size-medium);
+    color: var(--color-font-white);
+    background-color: rgba(31, 45, 48,0);
+    cursor: pointer;
 }
 
 .footerModal {
@@ -459,75 +492,123 @@ export default {
 
 @media (min-width:1178px) {
     .mainModal {
-        height: 90%;
+        height: 90vh;
+        width: calc(50vw - 1px);
+        padding: 40px;
+        
+    }
+    .closeModal { 
+        top: -30px;  
+        height: 20px;
+        width: 20px;           
+        font-size: var(--font-size-small); 
+        align-self: right; 
+            
     }
 
-    #title,
-    #subtitle {
-        width: 40%;
-    }
-
+    
     #title {
         font-size: var(--font-size-smaller);
     }
 
     #subtitle,
     .scholarshipModal {
-        font-size: var(--font-size-smallest);
+        font-size: var(--font-size-smallest);        
     }
+    .scholarshipModal {
+    
+    margin-right: 5px;    
+    margin-left: 4vw;   
+    display: flex;
+    flex-direction: column;
+    
+}
 
     .kindPrice,
     .results {
         align-items: center;
-        margin-right: 20px;
+        justify-content: space-between;
+        display: flex;
+        flex-direction: row;
     }
 
     .kindModal,
     .priceModal {
-        width: 20vw;
-        margin-right: 22px;
+        width: 20vw;           
     }
 
     .kindModal p,
     .cityCourse,
-    .priceModal :nth-child(1),
-    .results p {
-        font-size: 12px;
+    .priceModal :nth-child(1)
+    
+     {
+        font-size: var(--font-size-smallest2); 
+    }
+    .priceModal :nth-child(2)
+    {
+        font-size: var(--font-size-smallest); 
     }
 
     .kindModalOptions,
     .order,
     .universityModal,
-    .scholarshipModalPorcentage {
+    .scholarshipModalPorcentage,.results p {
         font-size: var(--font-size-smallest);
+    }
+    .universityModal{              
+        flex-wrap: nowrap;
+    }
+   
+    .universityModal img {
+        width: 30%;
+        height: 40px;
+        margin-top: 0;
+        object-fit: contain;             
+    }
+    .universityModal .checkOffer{
+        width: 15px;
+        height: 15px;
+        margin-top: 0;
+    }
+    .courseModal{
+        width: 30%;        
     }
 
     .courseModal :nth-child(2) {
+               
         font-size: var(--font-size-smallest);
     }
 
     .order button {
         align-self: flex-end;
         margin-bottom: 3px;
+        font-size: var(--font-size-smallest);
     }
-    .order img {
-    margin-top: 4%;    
-    height: 2vh;
-    width: 1.5vw;
+    .order img {           
+        height: 2vh;
+        width: 1.5vw;
     }
 
     .cityCourse {
-        justify-content: space-between;
-        margin-right: 20px;
+        justify-content: space-between;        
+        flex-direction: row;
+        font-size: var(--font-size-smaller);       
     }
 
     .cityCourse select {
         width: 20vw;
+        height: 30px;        
+        border-radius: 5px;
+        font-size: var(--font-size-smallest);
+
     }
 
     .city,
     .course {
-        width: 24vw;
+        width: 20vw;         
+    }
+    .city label, .course label{        
+        font-size: var(--font-size-smallest2);
     }
 }
 </style>
